@@ -1,0 +1,21 @@
+{
+	"compatibilityLevel": "JAVA_8",
+	"package": "net.dugged.nessie.himmelbjerget.mixins",
+	"refmap": "refmap.himmelbjerget.json",
+	"client": [
+		"CMixinNoOffsets",
+		"MixinASMModParser",
+		"MixinChatComponentText",
+		"MixinClippingHelper",
+		"MixinEntityEnderman",
+		"MixinGuiIngame",
+		"MixinJarDiscoverer",
+		"MixinLongHashMap",
+		"MixinMinecraft",
+		"MixinNBTTagString",
+		"MixinRenderGlobal",
+		"MixinRenderItemFrame",
+		"MixinS3EPacketTeams",
+		"MixinScoreboard"
+	]
+}

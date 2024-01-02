@@ -1,0 +1,16 @@
+[
+	{
+		"modid": "${modId}",
+		"name": "${modName}",
+		"description": "stuff and things for hypixel skyblock hax",
+		"version": "${version}",
+		"mcversion": "${mcversion}",
+		"url": "https://github.com/Nessiesson/Himmelbjerget",
+		"updateUrl": "",
+		"authorList": "nessiesson",
+		"credits": "",
+		"logoFile": "",
+		"screenshots": [],
+		"dependencies": []
+	}
+]

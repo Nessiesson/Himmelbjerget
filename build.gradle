@@ -1,0 +1,68 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url = "https://maven.minecraftforge.net" }
+		maven { url = "https://repo.spongepowered.org/repository/maven-public" }
+	}
+	dependencies {
+		classpath files('forgegradle/ForgeGradle-2.1.2.jar')
+		classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+	}
+}
+apply plugin: 'eclipse'
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'org.spongepowered.mixin'
+
+version = "1.0.0"
+def modName = "Himmelbjerget".toString()
+def modId = modName.toLowerCase()
+group = "net.dugged.nessie.${modId}"
+def loadingPlugin = "${group}.${modName}LoadingPlugin"
+archivesBaseName = modName
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = "1.8"
+compileJava.options.encoding = compileTestJava.options.encoding = "UTF-8"
+
+minecraft {
+	version = "1.8.9-11.15.1.2318-1.8.9"
+	mappings = "stable_22"
+	runDir = "run"
+	makeObfSourceJar = false
+	coreMod = loadingPlugin
+
+	replaceIn "Himmelbjerget.java"
+	replace "@VERSION@", project.version
+	replace "@MODNAME@", modName
+	replace "@MODID@", modId
+}
+
+repositories {
+	maven { url = "https://repo.spongepowered.org/repository/maven-public" }
+}
+
+dependencies {
+	implementation "org.spongepowered:mixin:0.7.11-SNAPSHOT"
+	annotationProcessor "org.spongepowered:mixin:0.7.11-SNAPSHOT"
+}
+
+processResources {
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	inputs.property "modName", modName
+	inputs.property "modId", modId
+	inputs.property "version", project.version
+
+	from(sourceSets.main.resources.srcDirs) {
+		include "mcmod.info"
+		expand "version": project.version, "mcversion": project.minecraft.version, "modName": modName, "modId": modId
+	}
+}
+
+mixin {
+	add sourceSets.main, "refmap.${modId}.json"
+}
+
+
+jar.manifest.attributes(["FMLCorePluginContainsFMLMod": true,
+                         "ForceLoadAsMod"             : true,
+                         "FMLCorePlugin"              : loadingPlugin,
+                         "TweakClass"                 : "org.spongepowered.asm.launch.MixinTweaker"])

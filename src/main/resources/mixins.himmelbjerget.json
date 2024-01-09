@@ -8,6 +8,7 @@
 		"MixinChatComponentText",
 		"MixinClippingHelper",
 		"MixinEntityEnderman",
+		"MixinEntityRenderer",
 		"MixinGuiIngame",
 		"MixinJarDiscoverer",
 		"MixinLongHashMap",

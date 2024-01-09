@@ -7,7 +7,9 @@
 		"mcversion": "${mcversion}",
 		"url": "https://github.com/Nessiesson/Himmelbjerget",
 		"updateUrl": "",
-		"authorList": "nessiesson",
+		"authorList": [
+			"nessiesson"
+		],
 		"credits": "",
 		"logoFile": "",
 		"screenshots": [],

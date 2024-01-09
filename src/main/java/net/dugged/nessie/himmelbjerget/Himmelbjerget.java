@@ -34,8 +34,8 @@ public class Himmelbjerget {
 
 		if (text.contains("Guild")) {
 			try {
-				((IChatComponentText) msg).himmelbjerget$replaceFirstInText("Guild > ", "G");
-				((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText("Guild > ", "G");
+				((IChatComponentText) msg).himmelbjerget$replaceFirstInText("Guild > ", "Ⓖ");
+				((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText("Guild > ", "Ⓖ");
 				return;
 			} catch (final Throwable e) {
 				LOGGER.info("not good", e);

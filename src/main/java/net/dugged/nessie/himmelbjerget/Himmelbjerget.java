@@ -13,7 +13,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
@@ -25,6 +24,7 @@ public class Himmelbjerget {
 	public static final String VERSION = "@VERSION@";
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust rotation", Keyboard.KEY_R, "key.categories.misc");
+
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -33,7 +33,7 @@ public class Himmelbjerget {
 
 	@SubscribeEvent
 	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Text event) {
-		if (adjustRotationKey.isKeyDown()) {
+		if (!Minecraft.getMinecraft().gameSettings.showDebugInfo) {
 			final EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 			final String rotationInfo = String.format("%+.3f / %+.3f", MathHelper.wrapAngleTo180_float(player.rotationYaw), MathHelper.wrapAngleTo180_float(player.rotationPitch));
 			event.right.add(rotationInfo);

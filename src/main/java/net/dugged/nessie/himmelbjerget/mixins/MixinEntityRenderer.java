@@ -12,6 +12,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinEntityRenderer {
 	@Redirect(method = "updateCameraAndRender", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;mouseSensitivity:F", opcode = Opcodes.GETFIELD))
 	private float himmelbjerget$adjustRotation(final GameSettings instance) {
-		return Himmelbjerget.adjustRotationKey.isKeyDown() ? instance.mouseSensitivity / 20F : instance.mouseSensitivity;
+		return Himmelbjerget.adjustRotationKey.isKeyDown() ? instance.mouseSensitivity / 100F : instance.mouseSensitivity;
 	}
 }

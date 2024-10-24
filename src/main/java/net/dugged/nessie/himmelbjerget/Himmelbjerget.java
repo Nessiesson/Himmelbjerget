@@ -33,6 +33,7 @@ public class Himmelbjerget {
 		MinecraftForge.EVENT_BUS.register(this);
 		ClientRegistry.registerKeyBinding(adjustRotationKey);
 		ClientRegistry.registerKeyBinding(scoreboardVisibilityKey);
+		ClientRegistry.registerTileEntity(MonolithHighlight.TileEntityMonolith.class, "himmelbjerget:monolith", new MonolithHighlight.TileEntityMonolithRenderer());
 	}
 
 	@SubscribeEvent

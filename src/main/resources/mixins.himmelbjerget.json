@@ -6,6 +6,7 @@
 	"client": [
 		"CMixinNoOffsets",
 		"MixinASMModParser",
+		"MixinBlockDragonEgg",
 		"MixinChatComponentText",
 		"MixinClippingHelper",
 		"MixinEntityEnderman",

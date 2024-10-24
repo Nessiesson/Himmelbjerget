@@ -2,6 +2,7 @@
 	"compatibilityLevel": "JAVA_8",
 	"package": "net.dugged.nessie.himmelbjerget.mixins",
 	"refmap": "refmap.himmelbjerget.json",
+	"minVersion": "0.7",
 	"client": [
 		"CMixinNoOffsets",
 		"MixinASMModParser",

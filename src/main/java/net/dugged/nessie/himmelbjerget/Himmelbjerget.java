@@ -19,6 +19,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
+import java.io.File;
+import java.util.Arrays;
+
 @Mod(modid = Himmelbjerget.MOD_ID, name = Himmelbjerget.NAME, version = Himmelbjerget.VERSION)
 public class Himmelbjerget {
 	public static final String MOD_ID = "@MODID@";
@@ -34,6 +37,11 @@ public class Himmelbjerget {
 		ClientRegistry.registerKeyBinding(adjustRotationKey);
 		ClientRegistry.registerKeyBinding(scoreboardVisibilityKey);
 		ClientRegistry.registerTileEntity(MonolithHighlight.TileEntityMonolith.class, "himmelbjerget:monolith", new MonolithHighlight.TileEntityMonolithRenderer());
+
+		final File[] files = Minecraft.getMinecraft().mcDataDir.listFiles(f -> f.isFile() && f.getName().startsWith("hs_err_pid"));
+		if (files != null) {
+			Arrays.stream(files).forEach(File::delete);
+		}
 	}
 
 	@SubscribeEvent

@@ -18,7 +18,7 @@ def modName = "Himmelbjerget".toString()
 def modId = modName.toLowerCase()
 group = "net.dugged.nessie.${modId}"
 def loadingPlugin = "${group}.${modName}LoadingPlugin"
-archivesBaseName = modName
+archivesBaseName = "z$modName"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = "1.8"
 compileJava.options.encoding = compileTestJava.options.encoding = "UTF-8"

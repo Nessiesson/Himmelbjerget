@@ -27,7 +27,8 @@ loom {
 	launchConfigs {
 		"client" {
 			// If you don't want mixins, remove these lines
-			property("mixin.debug", "true")
+			property("mixin.debug.verbose", "true")
+			property("mixin.debug.export", "true")
 			arg("--tweakClass", "org.spongepowered.asm.launch.MixinTweaker")
 		}
 	}
@@ -38,7 +39,9 @@ loom {
 				vmArgs.remove("-XstartOnFirstThread")
 			}
 		}
-		remove(getByName("server"))
+		"server" {
+			isIdeConfigGenerated = false
+		}
 	}
 	forge {
 		pack200Provider.set(dev.architectury.pack200.java.Pack200Adapter())

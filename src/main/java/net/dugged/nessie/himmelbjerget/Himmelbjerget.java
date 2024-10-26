@@ -22,11 +22,10 @@ import org.lwjgl.input.Keyboard;
 import java.io.File;
 import java.util.Arrays;
 
-@Mod(modid = Himmelbjerget.MOD_ID, name = Himmelbjerget.NAME, version = Himmelbjerget.VERSION)
+@Mod(modid = Himmelbjerget.MOD_ID, name = Himmelbjerget.MOD_NAME)
 public class Himmelbjerget {
-	public static final String MOD_ID = "@MODID@";
-	public static final String NAME = "@MODNAME@";
-	public static final String VERSION = "@VERSION@";
+	public static final String MOD_NAME = "Himmelbjerget";
+	public static final String MOD_ID = "himmelbjerget";
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust rotation", Keyboard.KEY_R, "key.categories.misc");
 	public static final KeyBinding scoreboardVisibilityKey = new KeyBinding("Toggle scoreboard visibility", Keyboard.KEY_Y, "key.categories.misc");

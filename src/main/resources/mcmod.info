@@ -1,17 +1,17 @@
 [
 	{
-		"modid": "${modId}",
-		"name": "${modName}",
+		"modid": "himmelbjerget",
+		"name": "Himmelbjerget",
 		"description": "stuff and things for hypixel skyblock hax",
 		"version": "${version}",
-		"mcversion": "${mcversion}",
+		"mcversion": "1.8.9",
 		"url": "https://github.com/Nessiesson/Himmelbjerget",
 		"updateUrl": "",
 		"authorList": [
 			"nessiesson"
 		],
-		"credits": "",
-		"logoFile": "",
+		"credits": "Image created by ChatGPT. :skull:",
+		"logoFile": "icon.png",
 		"screenshots": [],
 		"dependencies": []
 	}

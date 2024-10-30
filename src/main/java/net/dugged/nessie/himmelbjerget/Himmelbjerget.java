@@ -73,7 +73,6 @@ public class Himmelbjerget {
 			return;
 		}
 
-
 		if (text.contains("Guild")) {
 			try {
 				((IChatComponentText) msg).himmelbjerget$replaceFirstInText("Guild > ", "Ⓖ");
@@ -85,6 +84,16 @@ public class Himmelbjerget {
 
 			LOGGER.info("-");
 			LOGGER.info("{}", msg);
+		}
+
+		if (text.startsWith("Pickobulus is now available!") || text.startsWith("You used your Pickobulus Pickaxe Ability!")) {
+			event.setCanceled(true);
+			return;
+		}
+
+		if (text.startsWith("You earned") && text.contains("Event EXP from playing SkyBlock!")) {
+			event.setCanceled(true);
+			return;
 		}
 	}
 }

@@ -67,7 +67,7 @@ public class Himmelbjerget {
 	@SubscribeEvent
 	public void onClientReceivedChat(final ClientChatReceivedEvent event) {
 		final IChatComponent msg = event.message;
-		final String text = EnumChatFormatting.getTextWithoutFormattingCodes(msg.getUnformattedText());
+		final String text = EnumChatFormatting.getTextWithoutFormattingCodes(msg.getUnformattedText()).trim();
 		if (text.startsWith("[NPC] Don Expresso") && !text.contains("I DON'T FEEL SO GOOD...")) {
 			event.setCanceled(true);
 			return;
@@ -92,6 +92,11 @@ public class Himmelbjerget {
 		}
 
 		if (text.startsWith("You earned") && text.contains("Event EXP from playing SkyBlock!")) {
+			event.setCanceled(true);
+			return;
+		}
+
+		if ("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬".equals(text) || "# LEVEL UP! #".equals(text) || text.startsWith("You are now Event Level") || (text.startsWith("You earned") && text.contains("Event Silver!"))) {
 			event.setCanceled(true);
 			return;
 		}

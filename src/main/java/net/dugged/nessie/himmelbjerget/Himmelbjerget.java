@@ -37,7 +37,6 @@ public class Himmelbjerget {
 		MinecraftForge.EVENT_BUS.register(this);
 		ClientRegistry.registerKeyBinding(adjustRotationKey);
 		ClientRegistry.registerKeyBinding(scoreboardVisibilityKey);
-		ClientRegistry.registerTileEntity(MonolithHighlight.TileEntityMonolith.class, "himmelbjerget:monolith", new MonolithHighlight.TileEntityMonolithRenderer());
 
 		final File[] files = Minecraft.getMinecraft().mcDataDir.listFiles(f -> f.isFile() && f.getName().startsWith("hs_err_pid"));
 		if (files != null) {

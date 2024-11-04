@@ -102,6 +102,11 @@ public class Himmelbjerget {
 			return;
 		}
 
+		if (text.startsWith("You are now Hypixel Level") || "Claim your reward in the lobby!".equals(text)) {
+			event.setCanceled(true);
+			return;
+		}
+
 		if (killComboRegex.matcher(text).find() || text.startsWith("Your Kill Combo has expired!")) {
 			event.setCanceled(true);
 			return;

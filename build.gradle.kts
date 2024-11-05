@@ -53,6 +53,7 @@ loom {
 		}
 	}
 	// If you don't want mixins, remove these lines
+	@Suppress("UnstableApiUsage")
 	mixin {
 		defaultRefmapName.set("mixins.$modid.refmap.json")
 	}

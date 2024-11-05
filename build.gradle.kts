@@ -83,12 +83,20 @@ dependencies {
 		isTransitive = false
 	}
 	annotationProcessor("net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5")
+	annotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")
+	compileOnly("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")
 }
 
 // Tasks:
 
 tasks.withType(JavaCompile::class) {
+	sourceCompatibility = "17"
+	options.release = 8
 	options.encoding = "UTF-8"
+
+	javaCompiler = javaToolchains.compilerFor {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
 }
 
 tasks.withType(org.gradle.jvm.tasks.Jar::class) {

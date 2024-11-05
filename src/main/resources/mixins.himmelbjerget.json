@@ -12,6 +12,7 @@
 		"MixinEntityRenderer",
 		"MixinGuiIngame",
 		"MixinGuiPlayerTabOverlay",
+		"MixinItemStack",
 		"MixinJarDiscoverer",
 		"MixinLongHashMap",
 		"MixinMinecraft",

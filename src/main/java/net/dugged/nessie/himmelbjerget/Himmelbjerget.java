@@ -31,6 +31,7 @@ public class Himmelbjerget {
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust rotation", Keyboard.KEY_R, "key.categories.misc");
 	public static final KeyBinding scoreboardVisibilityKey = new KeyBinding("Toggle scoreboard visibility", Keyboard.KEY_Y, "key.categories.misc");
 	private static final Pattern killComboRegex = Pattern.compile("^\\+\\d+? Kill Combo");
+	public static int mspt = 50;
 
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
@@ -54,7 +55,8 @@ public class Himmelbjerget {
 	@SubscribeEvent
 	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Text event) {
 		final Minecraft mc = Minecraft.getMinecraft();
-		if (!mc.gameSettings.showDebugInfo && adjustRotationKey.isKeyDown()) {
+		final boolean showDebugInfo = mc.gameSettings.showDebugInfo;
+		if (!showDebugInfo && adjustRotationKey.isKeyDown()) {
 			final EntityPlayerSP player = mc.thePlayer;
 			final double dX = player.posX - player.prevPosX;
 			final double dY = player.posY - player.prevPosY;
@@ -62,6 +64,11 @@ public class Himmelbjerget {
 			final double speed = 20D * MathHelper.sqrt_double(dX * dX + dY * dY + dZ * dZ);
 			final String rotationInfo = String.format("%+.2f @ %+.3f / %+.3f", speed, MathHelper.wrapAngleTo180_float(player.rotationYaw), MathHelper.wrapAngleTo180_float(player.rotationPitch));
 			event.right.add(rotationInfo);
+		}
+
+		if (showDebugInfo) {
+			final int tps = Math.min(20, 1000 / mspt);
+			event.left.add(String.format("TPS: %d, MSPT: %d", tps, mspt));
 		}
 	}
 

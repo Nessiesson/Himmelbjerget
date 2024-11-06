@@ -17,6 +17,7 @@
 		"MixinLongHashMap",
 		"MixinMinecraft",
 		"MixinNBTTagString",
+		"MixinNetHandlerPlayClient",
 		"MixinRenderGlobal",
 		"MixinRenderItemFrame",
 		"MixinS3EPacketTeams",

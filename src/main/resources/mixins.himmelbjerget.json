@@ -18,6 +18,7 @@
 		"MixinMinecraft",
 		"MixinNBTTagString",
 		"MixinNetHandlerPlayClient",
+		"MixinRendererLivingEntity",
 		"MixinRenderGlobal",
 		"MixinRenderItemFrame",
 		"MixinS3EPacketTeams",

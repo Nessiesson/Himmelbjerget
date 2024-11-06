@@ -22,6 +22,7 @@
 		"MixinRenderItemFrame",
 		"MixinS3EPacketTeams",
 		"MixinScoreboard",
-		"MixinTextureAtlasSprite"
+		"MixinTextureAtlasSprite",
+		"MixinWorld"
 	]
 }

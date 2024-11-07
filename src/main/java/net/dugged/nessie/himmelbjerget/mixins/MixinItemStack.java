@@ -23,6 +23,10 @@ public abstract class MixinItemStack {
 				tag.removeTag("SkullOwner");
 			}
 
+			if (tag.hasKey("HideFlags", 99)) {
+				tag.removeTag("HideFlags");
+			}
+
 			return (E) tag.toString();
 		}
 

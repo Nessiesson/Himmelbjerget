@@ -11,6 +11,7 @@
 		"MixinEntityEnderman",
 		"MixinEntityRenderer",
 		"MixinGuiIngame",
+		"MixinGuiIngameForge",
 		"MixinGuiPlayerTabOverlay",
 		"MixinItemStack",
 		"MixinJarDiscoverer",

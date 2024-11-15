@@ -21,7 +21,6 @@ import org.lwjgl.input.Keyboard;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 @Mod(modid = Himmelbjerget.MOD_ID, name = Himmelbjerget.MOD_NAME)
 public class Himmelbjerget {
@@ -30,7 +29,6 @@ public class Himmelbjerget {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust rotation", Keyboard.KEY_R, "key.categories.misc");
 	public static final KeyBinding scoreboardVisibilityKey = new KeyBinding("Toggle scoreboard visibility", Keyboard.KEY_Y, "key.categories.misc");
-	private static final Pattern killComboRegex = Pattern.compile("^\\+\\d+? Kill Combo");
 	public static int mspt = 50;
 
 	@Mod.EventHandler
@@ -79,37 +77,10 @@ public class Himmelbjerget {
 			try {
 				((IChatComponentText) msg).himmelbjerget$replaceFirstInText("Guild > ", "Ⓖ");
 				((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText("Guild > ", "Ⓖ");
-				return;
 			} catch (final Throwable e) {
 				LOGGER.info("not good", e);
 			}
 
-			LOGGER.info("-");
-			LOGGER.info("{}", msg);
-		}
-
-		if (text.startsWith("Pickobulus is now available!") || text.startsWith("You used your Pickobulus Pickaxe Ability!")) {
-			event.setCanceled(true);
-			return;
-		}
-
-		if (text.startsWith("You earned") && text.contains("Event EXP from playing SkyBlock!")) {
-			event.setCanceled(true);
-			return;
-		}
-
-		if ("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬".equals(text) || "# LEVEL UP! #".equals(text) || text.startsWith("You are now Event Level") || (text.startsWith("You earned") && text.contains("Event Silver!"))) {
-			event.setCanceled(true);
-			return;
-		}
-
-		if (text.startsWith("You are now Hypixel Level") || "Claim your reward in the lobby!".equals(text)) {
-			event.setCanceled(true);
-			return;
-		}
-
-		if (killComboRegex.matcher(text).find() || text.startsWith("Your Kill Combo has expired!")) {
-			event.setCanceled(true);
 			return;
 		}
 	}

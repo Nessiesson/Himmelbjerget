@@ -29,10 +29,10 @@ public class Himmelbjerget {
 	public static final String MOD_NAME = "Himmelbjerget";
 	public static final String MOD_ID = "himmelbjerget";
 	public static final Logger LOGGER = LogManager.getLogger();
-	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust rotation", Keyboard.KEY_R, "key.categories.misc");
-	public static final KeyBinding secondaryAttackKey = new KeyBinding("Attack/Destroy secondary", -100, "key.categories.gameplay");
-	public static final KeyBinding secondaryAttackToggleKey = new KeyBinding("Toggle secondary Attack/Destroy key", Keyboard.KEY_NONE, "key.categories.misc");
-	public static final KeyBinding scoreboardVisibilityKey = new KeyBinding("Toggle scoreboard visibility", Keyboard.KEY_Y, "key.categories.misc");
+	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust Rotation", Keyboard.KEY_R, "key.categories.misc");
+	public static final KeyBinding secondaryAttackKey = new KeyBinding("Attack/Destroy Secondary", -100, "key.categories.gameplay");
+	public static final KeyBinding secondaryAttackToggleKey = new KeyBinding("Toggle Secondary Attack/Destroy Key", Keyboard.KEY_NONE, "key.categories.misc");
+	public static final KeyBinding scoreboardVisibilityKey = new KeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc");
 	public static boolean mayUseSecondaryAttackKey = false;
 	public static List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
 

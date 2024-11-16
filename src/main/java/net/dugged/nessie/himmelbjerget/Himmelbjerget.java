@@ -29,7 +29,7 @@ public class Himmelbjerget {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust rotation", Keyboard.KEY_R, "key.categories.misc");
 	public static final KeyBinding scoreboardVisibilityKey = new KeyBinding("Toggle scoreboard visibility", Keyboard.KEY_Y, "key.categories.misc");
-	public static int mspt = 50;
+	public static List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
 
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {

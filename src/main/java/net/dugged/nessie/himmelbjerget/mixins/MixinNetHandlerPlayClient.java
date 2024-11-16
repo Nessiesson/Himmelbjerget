@@ -22,9 +22,22 @@ public abstract class MixinNetHandlerPlayClient {
 		if (packetIn.getType() == 2 && packetIn.getChatComponent().getUnformattedText().contains("❤")) {
 			final var currentTime = System.nanoTime();
 			this.himmelbjerget$lastTimeUpdates.add(currentTime);
-			if (this.himmelbjerget$lastTimeUpdates.size() > 6) {
-				final var dt = currentTime - this.himmelbjerget$lastTimeUpdates.remove(0);
-				Himmelbjerget.mspt = (int) Math.max(50, dt * 5E-8 / 3D);
+			final var size = this.himmelbjerget$lastTimeUpdates.size();
+			if (size >= 6 /* 3 seconds */) {
+				final var dt = currentTime - this.himmelbjerget$lastTimeUpdates.get(size - 6);
+				final var mspt = (int) Math.max(50, dt * 5E-8 / 3D);
+				final var tps = 1000 / mspt;
+				Himmelbjerget.mspt.set(0, mspt);
+				Himmelbjerget.mspt.set(1, tps);
+			}
+
+			if (size > 120 /* 60 seconds */) {
+				final var dt = currentTime - this.himmelbjerget$lastTimeUpdates.get(0);
+				final var mspt = (int) Math.max(50, dt * 5E-8 / 120D);
+				final var tps = 1000 / mspt;
+				Himmelbjerget.mspt.set(2, mspt);
+				Himmelbjerget.mspt.set(3, tps);
+				this.himmelbjerget$lastTimeUpdates.remove(0);
 			}
 		}
 	}

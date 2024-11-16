@@ -22,6 +22,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 @Mod(modid = Himmelbjerget.MOD_ID, name = Himmelbjerget.MOD_NAME)
 public class Himmelbjerget {
@@ -29,13 +30,18 @@ public class Himmelbjerget {
 	public static final String MOD_ID = "himmelbjerget";
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust rotation", Keyboard.KEY_R, "key.categories.misc");
+	public static final KeyBinding secondaryAttackKey = new KeyBinding("Attack/Destroy secondary", -100, "key.categories.gameplay");
+	public static final KeyBinding secondaryAttackToggleKey = new KeyBinding("Toggle secondary Attack/Destroy key", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final KeyBinding scoreboardVisibilityKey = new KeyBinding("Toggle scoreboard visibility", Keyboard.KEY_Y, "key.categories.misc");
+	public static boolean mayUseSecondaryAttackKey = false;
 	public static List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
 
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(this);
 		ClientRegistry.registerKeyBinding(adjustRotationKey);
+		ClientRegistry.registerKeyBinding(secondaryAttackKey);
+		ClientRegistry.registerKeyBinding(secondaryAttackToggleKey);
 		ClientRegistry.registerKeyBinding(scoreboardVisibilityKey);
 
 		final File[] files = Minecraft.getMinecraft().mcDataDir.listFiles(f -> f.isFile() && f.getName().startsWith("hs_err_pid"));
@@ -48,6 +54,10 @@ public class Himmelbjerget {
 	public void onKeyPressed(final InputEvent.KeyInputEvent event) {
 		if (scoreboardVisibilityKey.isPressed()) {
 			GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective;
+		}
+
+		if (secondaryAttackToggleKey.isPressed()) {
+			mayUseSecondaryAttackKey = !mayUseSecondaryAttackKey;
 		}
 	}
 

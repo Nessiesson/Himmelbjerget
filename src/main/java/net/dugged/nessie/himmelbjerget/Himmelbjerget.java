@@ -9,6 +9,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -82,6 +83,14 @@ public class Himmelbjerget {
 			}
 
 			return;
+		}
+	}
+
+	// TODO: Work out if this breaks any sounds that I care about.
+	@SubscribeEvent
+	public void onSoundEvent(final PlaySoundEvent event) {
+		if (event.sound.getVolume() == 0.5F && "random.orb".equals(event.name)) {
+			event.result = null;
 		}
 	}
 }

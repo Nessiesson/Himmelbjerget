@@ -26,10 +26,9 @@ java {
 loom {
 	launchConfigs {
 		"client" {
-			// If you don't want mixins, remove these lines
 			property("mixin.debug.verbose", "true")
 			property("mixin.debug.export", "true")
-			arg("--tweakClass", "org.spongepowered.asm.launch.MixinTweaker")
+			arg("--tweakClass", "gg.essential.loader.stage0.EssentialSetupTweaker")
 		}
 	}
 	runConfigs {
@@ -52,7 +51,6 @@ loom {
 			accessTransformer(transformerFile)
 		}
 	}
-	// If you don't want mixins, remove these lines
 	@Suppress("UnstableApiUsage")
 	mixin {
 		defaultRefmapName.set("mixins.$modid.refmap.json")
@@ -67,7 +65,9 @@ sourceSets.main {
 
 repositories {
 	mavenCentral()
-	maven("https://repo.spongepowered.org/maven/")
+	maven("https://repo.essential.gg/repository/maven-public/")
+	maven("https://repo.spongepowered.org/repository/maven-public/")
+
 }
 
 val shadowImpl: Configuration by configurations.creating {
@@ -79,11 +79,18 @@ dependencies {
 	mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
 	forge("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9")
 
-	// If you don't want mixins, remove these lines
-	implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
-		isTransitive = false
+	shadowImpl("gg.essential:loader-launchwrapper:1.2.3")
+	implementation("gg.essential:essential-1.8.9-forge:16425+g3a090c5c88") {
+		exclude(module = "asm")
+		exclude(module = "asm-commons")
+		exclude(module = "asm-tree")
+		exclude(module = "gson")
+		exclude(module = "vigilance")
 	}
-	annotationProcessor("net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5")
+
+	shadowImpl(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0-beta.4")!!)
+	annotationProcessor("org.spongepowered:mixin:0.8.7:processor")
+	compileOnly("org.spongepowered:mixin:0.8.5")
 	annotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")
 	compileOnly("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")
 }
@@ -106,8 +113,8 @@ tasks.withType(org.gradle.jvm.tasks.Jar::class) {
 		this["FMLCorePluginContainsFMLMod"] = "true"
 		this["ForceLoadAsMod"] = "true"
 
-		// If you don't want mixins, remove these lines
-		this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
+		this["TweakClass"] = "gg.essential.loader.stage0.EssentialSetupTweaker"
+		this["TweakOrder"] = "0"
 		this["MixinConfigs"] = "mixins.$modid.json"
 		if (transformerFile.exists())
 			this["FMLAT"] = "${modid}_at.cfg"
@@ -143,8 +150,10 @@ tasks.shadowJar {
 	archiveClassifier.set("non-obfuscated-with-deps")
 	configurations = listOf(shadowImpl)
 	doLast {
-		configurations.forEach {
-			println("Copying dependencies into mod: ${it.files}")
+		if (configurations.isNotEmpty()) {
+			configurations.forEach {
+				println("Copying dependencies into mod: ${it.files}")
+			}
 		}
 	}
 

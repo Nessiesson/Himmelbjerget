@@ -3,7 +3,7 @@ package net.dugged.nessie.himmelbjerget.mixins;
 import net.dugged.nessie.himmelbjerget.Himmelbjerget;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.settings.GameSettings;
-import org.spongepowered.asm.lib.Opcodes;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

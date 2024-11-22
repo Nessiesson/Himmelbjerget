@@ -66,7 +66,6 @@ repositories {
 	mavenCentral()
 	maven("https://repo.essential.gg/repository/maven-public/")
 	maven("https://repo.spongepowered.org/repository/maven-public/")
-
 }
 
 val shadowImpl: Configuration by configurations.creating {
@@ -109,6 +108,7 @@ tasks.withType(org.gradle.jvm.tasks.Jar::class) {
 
 		this["TweakClass"] = "gg.essential.loader.stage0.EssentialSetupTweaker"
 		this["TweakOrder"] = "0"
+
 		this["MixinConfigs"] = "mixins.$modid.json"
 		if (transformerFile.exists())
 			this["FMLAT"] = "${modid}_at.cfg"

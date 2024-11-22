@@ -5,6 +5,8 @@
 	"minVersion": "0.7",
 	"client": [
 		"CMixinNoOffsets",
+		"IKeyBinding",
+		"IPositionedSound",
 		"MixinASMModParser",
 		"MixinChatComponentText",
 		"MixinClippingHelper",
@@ -16,6 +18,7 @@
 		"MixinGuiPlayerTabOverlay",
 		"MixinItemStack",
 		"MixinJarDiscoverer",
+		"MixinKeyBinding",
 		"MixinLongHashMap",
 		"MixinMinecraft",
 		"MixinNBTTagString",

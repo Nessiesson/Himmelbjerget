@@ -1,5 +1,6 @@
 package net.dugged.nessie.himmelbjerget;
 
+import net.dugged.nessie.himmelbjerget.mixins.IPositionedSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
@@ -15,7 +16,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
@@ -31,9 +31,8 @@ public class Himmelbjerget {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust Rotation", Keyboard.KEY_R, "key.categories.misc");
 	public static final KeyBinding secondaryAttackKey = new KeyBinding("Attack/Destroy Secondary", -100, "key.categories.gameplay");
-	public static final KeyBinding secondaryAttackToggleKey = new KeyBinding("Toggle Secondary Attack/Destroy Key", Keyboard.KEY_NONE, "key.categories.misc");
-	public static final KeyBinding scoreboardVisibilityKey = new KeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc");
-	public static boolean mayUseSecondaryAttackKey = false;
+	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = new ToggleSettingKeyBinding("Toggle Secondary Attack/Destroy Key", Keyboard.KEY_NONE, "key.categories.misc");
+	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = new ToggleSettingKeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
 	public static List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
 
 	@Mod.EventHandler
@@ -47,17 +46,6 @@ public class Himmelbjerget {
 		final File[] files = Minecraft.getMinecraft().mcDataDir.listFiles(f -> f.isFile() && f.getName().startsWith("hs_err_pid"));
 		if (files != null) {
 			Arrays.stream(files).forEach(File::delete);
-		}
-	}
-
-	@SubscribeEvent
-	public void onKeyPressed(final InputEvent.KeyInputEvent event) {
-		if (scoreboardVisibilityKey.isPressed()) {
-			GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective;
-		}
-
-		if (secondaryAttackToggleKey.isPressed()) {
-			mayUseSecondaryAttackKey = !mayUseSecondaryAttackKey;
 		}
 	}
 
@@ -99,8 +87,9 @@ public class Himmelbjerget {
 	// TODO: Work out if this breaks any sounds that I care about.
 	@SubscribeEvent
 	public void onSoundEvent(final PlaySoundEvent event) {
-		if (event.sound.getVolume() == 0.5F && "random.orb".equals(event.name)) {
-			event.result = null;
+		final var sound = event.sound;
+		if (sound.getVolume() == 0.5F && "random.orb".equals(event.name)) {
+			((IPositionedSound) sound).setVolume(sound.getVolume() * 0.25F);
 		}
 	}
 }

@@ -9,11 +9,11 @@ public class ExtendedAttackKeyBinding extends KeyBinding {
 
 	@Override
 	public boolean isKeyDown() {
-		return Himmelbjerget.mayUseSecondaryAttackKey && Himmelbjerget.secondaryAttackKey.isKeyDown() || super.isKeyDown();
+		return super.isKeyDown() || Himmelbjerget.secondaryAttackToggleKey.isSettingEnabled && Himmelbjerget.secondaryAttackKey.isKeyDown();
 	}
 
 	@Override
 	public boolean isPressed() {
-		return Himmelbjerget.mayUseSecondaryAttackKey && Himmelbjerget.secondaryAttackKey.isPressed() || super.isPressed();
+		return super.isPressed() || Himmelbjerget.secondaryAttackToggleKey.isSettingEnabled && Himmelbjerget.secondaryAttackKey.isPressed();
 	}
 }

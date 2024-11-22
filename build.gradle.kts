@@ -78,18 +78,13 @@ dependencies {
 	mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
 	forge("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9")
 
-	shadowImpl("gg.essential:loader-launchwrapper:1.2.3")
-	shadowImpl("gg.essential:essential-1.8.9-forge:17141+gd6f4cfd3a8") {
-		exclude(module = "asm")
-		exclude(module = "asm-commons")
-		exclude(module = "asm-tree")
-		exclude(module = "gson")
-		exclude(module = "vigilance")
-	}
+	implementation("gg.essential:loader-launchwrapper:1.2.3")
+	implementation("gg.essential:essential-1.8.9-forge:17141+gd6f4cfd3a8")
 
-	implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0-beta.4")!!)
+	annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0-beta.4")
 	annotationProcessor("org.spongepowered:mixin:0.8.7:processor")
 	compileOnly("org.spongepowered:mixin:0.8.5")
+
 	annotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")
 	compileOnly("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")
 }
@@ -107,7 +102,7 @@ tasks.withType(JavaCompile::class) {
 }
 
 tasks.withType(org.gradle.jvm.tasks.Jar::class) {
-	archiveBaseName.set("z$modName")
+	archiveBaseName.set(modName)
 	manifest.attributes.run {
 		this["FMLCorePluginContainsFMLMod"] = "true"
 		this["ForceLoadAsMod"] = "true"

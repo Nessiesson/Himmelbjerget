@@ -4,7 +4,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.client.GuiIngameForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(GuiIngameForge.class)
@@ -17,5 +19,15 @@ public abstract class MixinGuiIngameForge {
 	@Redirect(method = "renderRecordOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/FontRenderer;drawString(Ljava/lang/String;III)I"))
 	private int himmelbjerget$renderTextWithShadows(final FontRenderer instance, final String text, final int x, final int y, final int color) {
 		return instance.drawString(text, x, y, color, true);
+	}
+
+	@ModifyConstant(method = "renderRecordOverlay", remap = false, constant = @Constant(intValue = -4))
+	private int himmelbjerget$moveDownRecordOverlay(final int constant) {
+		return constant + 9;
+	}
+
+	@ModifyConstant(method = "renderToolHightlight", remap = false, constant = @Constant(intValue = 59))
+	private int himmelbjerget$moveDownToolText(final int constant) {
+		return constant - 9;
 	}
 }

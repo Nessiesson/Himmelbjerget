@@ -44,7 +44,6 @@ loom {
 	}
 	forge {
 		pack200Provider.set(dev.architectury.pack200.java.Pack200Adapter())
-		// If you don't want mixins, remove this lines
 		mixinConfig("mixins.$modid.json")
 		if (transformerFile.exists()) {
 			println("Installing access transformer")
@@ -80,7 +79,7 @@ dependencies {
 	forge("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9")
 
 	shadowImpl("gg.essential:loader-launchwrapper:1.2.3")
-	implementation("gg.essential:essential-1.8.9-forge:16425+g3a090c5c88") {
+	shadowImpl("gg.essential:essential-1.8.9-forge:17141+gd6f4cfd3a8") {
 		exclude(module = "asm")
 		exclude(module = "asm-commons")
 		exclude(module = "asm-tree")
@@ -88,7 +87,7 @@ dependencies {
 		exclude(module = "vigilance")
 	}
 
-	shadowImpl(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0-beta.4")!!)
+	implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0-beta.4")!!)
 	annotationProcessor("org.spongepowered:mixin:0.8.7:processor")
 	compileOnly("org.spongepowered:mixin:0.8.5")
 	annotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")

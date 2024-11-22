@@ -51,15 +51,14 @@ public class Himmelbjerget {
 
 	@SubscribeEvent
 	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Text event) {
-		final Minecraft mc = Minecraft.getMinecraft();
-		if (!mc.gameSettings.showDebugInfo && adjustRotationKey.isKeyDown()) {
-			final EntityPlayerSP player = mc.thePlayer;
-			final double dX = player.posX - player.prevPosX;
-			final double dY = player.posY - player.prevPosY;
-			final double dZ = player.posZ - player.prevPosZ;
-			final double speed = 20D * MathHelper.sqrt_double(dX * dX + dY * dY + dZ * dZ);
-			final String rotationInfo = String.format("%+.2f @ %+.3f / %+.3f", speed, MathHelper.wrapAngleTo180_float(player.rotationYaw), MathHelper.wrapAngleTo180_float(player.rotationPitch));
-			event.right.add(rotationInfo);
+		final var mc = Minecraft.getMinecraft();
+		final var player = mc.thePlayer;
+		final var dX = player.posX - player.prevPosX;
+		final var dY = player.posY - player.prevPosY;
+		final var dZ = player.posZ - player.prevPosZ;
+		final var speed = 20D * MathHelper.sqrt_double(dX * dX + dY * dY + dZ * dZ);
+		if (mc.gameSettings.showDebugInfo) {
+			event.left.set(5, String.format("%s, v: %+.2f", event.left.get(5), speed));
 		}
 	}
 

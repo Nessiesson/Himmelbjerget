@@ -144,7 +144,7 @@ tasks.shadowJar {
 	archiveClassifier.set("non-obfuscated-with-deps")
 	configurations = listOf(shadowImpl)
 	doLast {
-		if (configurations.isNotEmpty()) {
+		if (configurations.any { !it.isEmpty }) {
 			configurations.forEach {
 				println("Copying dependencies into mod: ${it.files}")
 			}

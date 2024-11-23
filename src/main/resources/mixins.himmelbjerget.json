@@ -17,6 +17,7 @@
 		"MixinGuiIngame",
 		"MixinGuiIngameForge",
 		"MixinGuiPlayerTabOverlay",
+		"MixinGuiScreen",
 		"MixinItemStack",
 		"MixinJarDiscoverer",
 		"MixinKeyBinding",

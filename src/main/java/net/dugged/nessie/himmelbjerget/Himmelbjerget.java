@@ -2,7 +2,6 @@ package net.dugged.nessie.himmelbjerget;
 
 import net.dugged.nessie.himmelbjerget.mixins.IPositionedSound;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -71,12 +70,11 @@ public class Himmelbjerget {
 			return;
 		}
 
-		if (text.contains("Guild")) {
+		if (text.contains("Guild >")) {
 			try {
 				((IChatComponentText) msg).himmelbjerget$replaceFirstInText("Guild > ", "Ⓖ");
 				((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText("Guild > ", "Ⓖ");
-			} catch (final Throwable e) {
-				LOGGER.info("not good", e);
+			} catch (final Throwable ignored) {
 			}
 
 			return;

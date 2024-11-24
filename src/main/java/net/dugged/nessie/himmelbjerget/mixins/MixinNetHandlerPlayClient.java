@@ -24,7 +24,7 @@ public abstract class MixinNetHandlerPlayClient {
 		if (packetIn.getType() == 2 && component.getUnformattedText().contains("❤")) {
 			if (component instanceof ChatComponentText) {
 				final var text = (IChatComponentText) component;
-				text.setText(text.getText().replace(" Mana", ""));
+				text.setText(text.getText().replace("✎ Mana", "✎"));
 			}
 
 			final var currentTime = System.nanoTime();

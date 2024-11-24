@@ -3,6 +3,7 @@ package net.dugged.nessie.himmelbjerget;
 import net.dugged.nessie.himmelbjerget.mixins.IPositionedSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
@@ -20,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +34,8 @@ public class Himmelbjerget {
 	public static final KeyBinding secondaryAttackKey = new KeyBinding("Attack/Destroy Secondary", -100, "key.categories.gameplay");
 	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = new ToggleSettingKeyBinding("Toggle Secondary Attack/Destroy Key", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = new ToggleSettingKeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
-	public static List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
+	public static final List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
+	private final List<Long> lastTimeUpdates = new ArrayList<>();
 
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
@@ -68,6 +71,34 @@ public class Himmelbjerget {
 		if (text.startsWith("[NPC] Don Expresso") && !text.contains("I DON'T FEEL SO GOOD...")) {
 			event.setCanceled(true);
 			return;
+		}
+
+		if (event.type == 2 && text.contains("❤")) {
+			if (msg instanceof ChatComponentText) {
+				final var replace = (IChatComponentText) msg;
+				replace.himmelbjerget$replaceFirstInText("✎ Mana", "✎");
+				replace.himmelbjerget$replaceFirstInText("❈ Defense", "❈");
+			}
+
+			final var currentTime = System.nanoTime();
+			this.lastTimeUpdates.add(currentTime);
+			final var size = this.lastTimeUpdates.size();
+			if (size >= 6 /* 3 seconds */) {
+				final var dt = currentTime - this.lastTimeUpdates.get(size - 6);
+				final var mspt = (int) Math.max(50, dt * 5E-8 / 3D);
+				final var tps = 1000 / mspt;
+				Himmelbjerget.mspt.set(0, mspt);
+				Himmelbjerget.mspt.set(1, tps);
+			}
+
+			if (size > 120 /* 60 seconds */) {
+				final var dt = currentTime - this.lastTimeUpdates.get(0);
+				final var mspt = (int) Math.max(50, dt * 5E-8 / 120D);
+				final var tps = 1000 / mspt;
+				Himmelbjerget.mspt.set(2, mspt);
+				Himmelbjerget.mspt.set(3, tps);
+				this.lastTimeUpdates.remove(0);
+			}
 		}
 
 		if (text.contains("Guild >")) {

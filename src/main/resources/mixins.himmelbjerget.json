@@ -5,7 +5,6 @@
 	"minVersion": "0.7",
 	"client": [
 		"CMixinNoOffsets",
-		"IChatComponentText",
 		"IKeyBinding",
 		"IPositionedSound",
 		"MixinASMModParser",
@@ -25,7 +24,6 @@
 		"MixinLongHashMap",
 		"MixinMinecraft",
 		"MixinNBTTagString",
-		"MixinNetHandlerPlayClient",
 		"MixinRendererLivingEntity",
 		"MixinRenderGlobal",
 		"MixinRenderItemFrame",

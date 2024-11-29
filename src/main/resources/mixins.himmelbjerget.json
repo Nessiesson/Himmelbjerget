@@ -17,6 +17,7 @@
 		"MixinGameSettings",
 		"MixinGuiIngame",
 		"MixinGuiIngameForge",
+		"MixinGuiOverlayDebug",
 		"MixinGuiPlayerTabOverlay",
 		"MixinGuiScreen",
 		"MixinItemStack",

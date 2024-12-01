@@ -82,7 +82,7 @@ dependencies {
 
 	annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0-beta.4")
 	annotationProcessor("org.spongepowered:mixin:0.8.7:processor")
-	compileOnly("org.spongepowered:mixin:0.8.5")
+	compileOnly("org.spongepowered:mixin:0.8.4")
 
 	annotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")
 	compileOnly("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")

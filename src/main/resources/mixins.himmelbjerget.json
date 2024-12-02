@@ -32,6 +32,7 @@
 		"MixinRenderItemFrame",
 		"MixinS3EPacketTeams",
 		"MixinScoreboard",
+		"MixinTextureMap",
 		"MixinWorld",
 		"MixinYggdrasilMinecraftSessionService"
 	]

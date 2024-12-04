@@ -2,6 +2,7 @@ package net.dugged.nessie.himmelbjerget;
 
 import net.dugged.nessie.himmelbjerget.mixins.IPositionedSound;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -17,6 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
@@ -37,6 +39,8 @@ public class Himmelbjerget {
 	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = new ToggleSettingKeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
 	public static final List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
 	private final List<Long> lastTimeUpdates = new ArrayList<>();
+	private final List<Double> lastSpeeds = new ArrayList<>();
+	private final List<Double> speeds = new ArrayList<>(Arrays.asList(new Double[2])); // ugly way to get list with predetermined size
 
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
@@ -53,15 +57,28 @@ public class Himmelbjerget {
 	}
 
 	@SubscribeEvent
+	public void onPlayerTick(final TickEvent.PlayerTickEvent event) {
+		if (event.phase == TickEvent.Phase.END && event.player instanceof EntityPlayerSP) {
+			final var player = event.player;
+			final var dX = player.posX - player.prevPosX;
+			final var dY = player.posY - player.prevPosY;
+			final var dZ = player.posZ - player.prevPosZ;
+			final var speed = 20D * MathHelper.sqrt_double(dX * dX + dY * dY + dZ * dZ);
+
+			this.lastSpeeds.add(speed);
+			if (this.lastSpeeds.size() > 100) {
+				this.lastSpeeds.remove(0);
+			}
+
+			this.speeds.set(0, speed);
+			this.speeds.set(1, this.lastSpeeds.stream().mapToDouble(s -> s).average().orElse(0D));
+		}
+	}
+
+	@SubscribeEvent
 	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Text event) {
-		final var mc = Minecraft.getMinecraft();
-		final var player = mc.thePlayer;
-		final var dX = player.posX - player.prevPosX;
-		final var dY = player.posY - player.prevPosY;
-		final var dZ = player.posZ - player.prevPosZ;
-		final var speed = 20D * MathHelper.sqrt_double(dX * dX + dY * dY + dZ * dZ);
-		if (mc.gameSettings.showDebugInfo) {
-			event.left.set(5, String.format("%s, v: %+.2f", event.left.get(5), speed));
+		if (Minecraft.getMinecraft().gameSettings.showDebugInfo) {
+			event.left.set(5, String.format("%s, v: %+.2f, %+.2f", event.left.get(5), this.speeds.get(0), this.speeds.get(1)));
 		}
 	}
 

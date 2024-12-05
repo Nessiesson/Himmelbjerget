@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
@@ -40,7 +41,7 @@ public class Himmelbjerget {
 	public static final List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
 	private final List<Long> lastTimeUpdates = new ArrayList<>();
 	private final List<Double> lastSpeeds = new ArrayList<>();
-	private final List<Double> speeds = new ArrayList<>(Arrays.asList(new Double[2])); // ugly way to get list with predetermined size
+	private final MutablePair<Double, Double> speeds = new MutablePair<>(0D, 0D);
 
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
@@ -70,15 +71,15 @@ public class Himmelbjerget {
 				this.lastSpeeds.remove(0);
 			}
 
-			this.speeds.set(0, speed);
-			this.speeds.set(1, this.lastSpeeds.stream().mapToDouble(s -> s).average().orElse(0D));
+			this.speeds.setLeft(speed);
+			this.speeds.setRight(this.lastSpeeds.stream().mapToDouble(s -> s).average().orElse(0D));
 		}
 	}
 
 	@SubscribeEvent
 	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Text event) {
 		if (Minecraft.getMinecraft().gameSettings.showDebugInfo) {
-			event.left.set(5, String.format("%s, v: %+.2f, %+.2f", event.left.get(5), this.speeds.get(0), this.speeds.get(1)));
+			event.left.set(5, String.format("%s, v: %+.2f, %+.2f", event.left.get(5), this.speeds.getLeft(), this.speeds.getRight()));
 		}
 	}
 

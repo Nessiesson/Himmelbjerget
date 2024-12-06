@@ -36,6 +36,7 @@
 		"MixinScoreboard",
 		"MixinTextureMap",
 		"MixinWorld",
+		"MixinWorldClient",
 		"MixinYggdrasilMinecraftSessionService"
 	]
 }

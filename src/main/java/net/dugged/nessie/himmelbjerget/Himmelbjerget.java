@@ -102,20 +102,22 @@ public class Himmelbjerget {
 			final var currentTime = System.nanoTime();
 			this.lastTimeUpdates.add(currentTime);
 			final var size = this.lastTimeUpdates.size();
-			if (size >= 6 /* 3 seconds */) {
-				final var dt = currentTime - this.lastTimeUpdates.get(size - 6);
-				final var mspt = (int) Math.max(50, dt * 5E-8 / 3D);
-				final var tps = 1000 / mspt;
-				Himmelbjerget.mspt.set(0, mspt);
-				Himmelbjerget.mspt.set(1, tps);
-			}
 
-			if (size > 120 /* 60 seconds */) {
-				final var dt = currentTime - this.lastTimeUpdates.get(0);
-				final var mspt = (int) Math.max(50, dt * 5E-8 / 120D);
-				final var tps = 1000 / mspt;
-				Himmelbjerget.mspt.set(2, mspt);
-				Himmelbjerget.mspt.set(3, tps);
+			final var shortSize = Math.min(size, 6);
+			final var shortIndex = Math.min(0, shortSize - 6);
+			final var shortDt = currentTime - this.lastTimeUpdates.get(shortIndex);
+			final var shortMspt = (int) Math.max(50, shortDt * 1E-7 / shortSize);
+			final var shortTps = 1000 / shortMspt;
+			Himmelbjerget.mspt.set(0, shortMspt);
+			Himmelbjerget.mspt.set(1, shortTps);
+
+			final var longDt = currentTime - this.lastTimeUpdates.get(0);
+			final var longMspt = (int) Math.max(50, longDt * 1E-7 / size);
+			final var longTps = 1000 / longMspt;
+			Himmelbjerget.mspt.set(2, longMspt);
+			Himmelbjerget.mspt.set(3, longTps);
+
+			if (size >= 120) {
 				this.lastTimeUpdates.remove(0);
 			}
 		}

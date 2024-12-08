@@ -103,10 +103,9 @@ public class Himmelbjerget {
 			this.lastTimeUpdates.add(currentTime);
 			final var size = this.lastTimeUpdates.size();
 
-			final var shortSize = Math.min(size, 6);
-			final var shortIndex = Math.min(0, shortSize - 6);
+			final var shortIndex = Math.max(0, size - 6);
 			final var shortDt = currentTime - this.lastTimeUpdates.get(shortIndex);
-			final var shortMspt = (int) Math.max(50, shortDt * 1E-7 / shortSize);
+			final var shortMspt = (int) Math.max(50, shortDt * 1E-7 / Math.max(shortIndex, 1D));
 			final var shortTps = 1000 / shortMspt;
 			Himmelbjerget.mspt.set(0, shortMspt);
 			Himmelbjerget.mspt.set(1, shortTps);
@@ -117,7 +116,7 @@ public class Himmelbjerget {
 			Himmelbjerget.mspt.set(2, longMspt);
 			Himmelbjerget.mspt.set(3, longTps);
 
-			if (size >= 120) {
+			if (size >= 100) {
 				this.lastTimeUpdates.remove(0);
 			}
 		}

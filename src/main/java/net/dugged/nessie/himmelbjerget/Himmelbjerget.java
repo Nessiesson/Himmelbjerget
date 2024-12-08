@@ -116,7 +116,7 @@ public class Himmelbjerget {
 			Himmelbjerget.mspt.set(2, longMspt);
 			Himmelbjerget.mspt.set(3, longTps);
 
-			if (size >= 100) {
+			if (size >= 120) {
 				this.lastTimeUpdates.remove(0);
 			}
 		}

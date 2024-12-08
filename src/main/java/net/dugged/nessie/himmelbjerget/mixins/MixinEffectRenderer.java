@@ -6,7 +6,9 @@ import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.util.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EffectRenderer.class)
@@ -16,5 +18,10 @@ public abstract class MixinEffectRenderer {
 		if (Himmelbjerget.secondaryAttackToggleKey.isSettingEnabled) {
 			ci.cancel();
 		}
+	}
+
+	@ModifyConstant(method = "addEffect", constant = @Constant(intValue = 4000))
+	private int himmelbjerget$increaseParticleLimit(final int constant) {
+		return 16384; // like in 1.12
 	}
 }

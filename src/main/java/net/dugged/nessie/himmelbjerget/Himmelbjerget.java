@@ -136,7 +136,7 @@ public class Himmelbjerget {
 	@SubscribeEvent
 	public void onSoundEvent(final PlaySoundEvent event) {
 		final var sound = event.sound;
-		if (sound.getVolume() == 0.5F && "random.orb".equals(event.name)) {
+		if ("random.orb".equals(event.name) && (sound.getVolume() == 0.5F || (sound.getVolume() == 1F && sound.getPitch() == 1.4920635F))) {
 			((IPositionedSound) sound).setVolume(sound.getVolume() * 0.25F);
 		}
 	}

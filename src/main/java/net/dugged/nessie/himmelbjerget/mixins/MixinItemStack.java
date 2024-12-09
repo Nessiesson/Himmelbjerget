@@ -3,6 +3,8 @@ package net.dugged.nessie.himmelbjerget.mixins;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.EnumChatFormatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,6 +34,31 @@ public abstract class MixinItemStack {
 
 			if (tag.hasKey("Unbreakable", 99)) {
 				tag.removeTag("Unbreakable");
+			}
+
+			if (tag.hasKey("ench", 9)) {
+				tag.removeTag("ench");
+			}
+
+			// TODO: Work out if hasNoTags() is ever false
+			if (tag.hasKey("AttributeModifiers", 9) && tag.getTagList("AttributeModifiers", 10).hasNoTags()) {
+				tag.removeTag("AttributeModifiers");
+			}
+
+			if (tag.hasKey("display", 10)) {
+				final var display = tag.getCompoundTag("display");
+				if (display.getTagId("Lore") == 9) {
+					final var lore = display.getTagList("Lore", 8);
+					for (int i = 0; i < lore.tagCount(); ++i) {
+						final var line = (NBTTagString) lore.get(i);
+						((INBTTagString) line).setData(line.getString() + EnumChatFormatting.GRAY);
+					}
+				}
+
+				if (display.hasKey("Name", 8)) {
+					final var name = (NBTTagString) display.getTag("Name");
+					((INBTTagString) name).setData(name.getString() + EnumChatFormatting.GRAY);
+				}
 			}
 
 			return (E) tag.toString();

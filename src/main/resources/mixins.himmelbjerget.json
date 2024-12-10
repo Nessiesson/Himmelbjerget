@@ -29,6 +29,7 @@
 		"MixinMinecraft",
 		"MixinNBTTagString",
 		"MixinNetHandlerPlayClient",
+		"MixinPowderGrindingOverlay",
 		"MixinRendererLivingEntity",
 		"MixinRenderFish",
 		"MixinRenderGlobal",

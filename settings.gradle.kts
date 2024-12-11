@@ -1,21 +1,27 @@
 pluginManagement {
 	repositories {
-		mavenCentral()
 		gradlePluginPortal()
+		mavenCentral()
+		maven("https://repo.essential.gg/repository/maven-public")
+		maven("https://maven.architectury.dev")
 		maven("https://maven.fabricmc.net")
-		maven("https://maven.architectury.dev/")
-		maven("https://maven.minecraftforge.net/")
-		maven("https://repo.spongepowered.org/repository/maven-public/")
-		maven("https://repo.sk1er.club/repository/maven-releases/")
+		maven("https://maven.minecraftforge.net")
 	}
-
-	resolutionStrategy {
-		eachPlugin {
-			when (requested.id.id) {
-				"gg.essential.loom" -> useModule("gg.essential:architectury-loom:${requested.version}")
-			}
-		}
+	plugins {
+		id("gg.essential.multi-version.root") version "0.6.5"
 	}
 }
 
-rootProject.name = "Himmelbjerget"
+val modName: String by settings
+rootProject.name = modName
+rootProject.buildFileName = "root.gradle.kts"
+
+listOf(
+	"1.8.9-forge"
+).forEach { version ->
+	include(":$version")
+	project(":$version").apply {
+		projectDir = file("versions/$version")
+		buildFileName = "../../build.gradle.kts"
+	}
+}

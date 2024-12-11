@@ -16,6 +16,7 @@ out
 # gradle
 build
 .gradle
+versions/1.8.9-forge/
 
 # other
 .vscode

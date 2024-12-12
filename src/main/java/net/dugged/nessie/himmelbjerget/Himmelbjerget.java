@@ -1,5 +1,6 @@
 package net.dugged.nessie.himmelbjerget;
 
+import com.google.common.collect.EvictingQueue;
 import net.dugged.nessie.himmelbjerget.mixins.IPositionedSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -25,10 +26,10 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("UnstableApiUsage")
 @Mod(modid = Himmelbjerget.MOD_ID, name = Himmelbjerget.MOD_NAME)
 public class Himmelbjerget {
 	public static final String MOD_NAME = "Himmelbjerget";
@@ -39,8 +40,8 @@ public class Himmelbjerget {
 	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = new ToggleSettingKeyBinding("Toggle Secondary Attack/Destroy Key", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = new ToggleSettingKeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
 	public static final List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
-	private final List<Long> lastTimeUpdates = new ArrayList<>();
-	private final List<Double> lastSpeeds = new ArrayList<>();
+	private final EvictingQueue<Long> fastTimeUpdates = EvictingQueue.create(10);
+	private final EvictingQueue<Double> lastSpeeds = EvictingQueue.create(100);
 	private final MutablePair<Double, Double> speeds = new MutablePair<>(0D, 0D);
 
 	@Mod.EventHandler
@@ -67,10 +68,6 @@ public class Himmelbjerget {
 			final var speed = 20D * MathHelper.sqrt_double(dX * dX + dY * dY + dZ * dZ);
 
 			this.lastSpeeds.add(speed);
-			if (this.lastSpeeds.size() > 100) {
-				this.lastSpeeds.remove(0);
-			}
-
 			this.speeds.setLeft(speed);
 			this.speeds.setRight(this.lastSpeeds.stream().mapToDouble(s -> s).average().orElse(0D));
 		}
@@ -92,32 +89,21 @@ public class Himmelbjerget {
 			return;
 		}
 
-		if (event.type == 2 && text.contains("❤")) {
+		if (event.type == 2) {
 			if (msg instanceof ChatComponentText) {
 				final var replace = (IChatComponentText) msg;
 				replace.himmelbjerget$replaceFirstInText("✎ Mana", "✎");
 				replace.himmelbjerget$replaceFirstInText("❈ Defense", "❈");
 			}
 
-			final var currentTime = System.nanoTime();
-			this.lastTimeUpdates.add(currentTime);
-			final var size = this.lastTimeUpdates.size();
-
-			final var shortIndex = Math.max(0, size - 6);
-			final var shortDt = currentTime - this.lastTimeUpdates.get(shortIndex);
-			final var shortMspt = (int) Math.max(50, shortDt * 1E-7 / Math.max(shortIndex, 1D));
-			final var shortTps = 1000 / shortMspt;
-			Himmelbjerget.mspt.set(0, shortMspt);
-			Himmelbjerget.mspt.set(1, shortTps);
-
-			final var longDt = currentTime - this.lastTimeUpdates.get(0);
-			final var longMspt = (int) Math.max(50, longDt * 1E-7 / size);
-			final var longTps = 1000 / longMspt;
-			Himmelbjerget.mspt.set(2, longMspt);
-			Himmelbjerget.mspt.set(3, longTps);
-
-			if (size >= 120) {
-				this.lastTimeUpdates.remove(0);
+			if (text.contains("❤")) {
+				final var currentTime = System.nanoTime();
+				this.fastTimeUpdates.add(currentTime);
+				final var dt = currentTime - this.fastTimeUpdates.peek();
+				final var mspt = (int) Math.max(50, dt * 1E-7 / this.fastTimeUpdates.size());
+				final var tps = 1000 / mspt;
+				Himmelbjerget.mspt.set(0, mspt);
+				Himmelbjerget.mspt.set(1, tps);
 			}
 		}
 
@@ -128,7 +114,6 @@ public class Himmelbjerget {
 			} catch (final Throwable ignored) {
 			}
 
-			return;
 		}
 	}
 

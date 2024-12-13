@@ -102,13 +102,14 @@ public class Himmelbjerget {
 			}
 		}
 
-		if (text.contains("Guild >")) {
+		if (text.startsWith("Guild >")) {
 			try {
-				((IChatComponentText) msg).himmelbjerget$replaceFirstInText("Guild > ", "Ⓖ");
-				((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText("Guild > ", "Ⓖ");
+				((IChatComponentText) msg).himmelbjerget$replaceFirstInText("Guild >", "Ⓖ >");
+				((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText("Guild >", "Ⓖ >");
 			} catch (final Throwable ignored) {
 			}
 
+			return;
 		}
 	}
 

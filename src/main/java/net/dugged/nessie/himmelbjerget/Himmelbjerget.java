@@ -14,6 +14,7 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -123,6 +124,15 @@ public class Himmelbjerget {
 		final var sound = event.sound;
 		if ("random.orb".equals(event.name) && (sound.getVolume() == 0.5F || (sound.getVolume() == 1F && sound.getPitch() == 1.4920635F))) {
 			((IPositionedSound) sound).setVolume(sound.getVolume() * 0.25F);
+		}
+	}
+
+	@SubscribeEvent
+	public void onWorldLoad(final WorldEvent.Load event) {
+		final var handler = Minecraft.getMinecraft().getNetHandler();
+		if (event.world.isRemote && handler != null) {
+			this.fastTimeUpdates.clear();
+			((INetHandlerPlayClient) handler).himmelbjerget$resetSlowTimeUpdates();
 		}
 	}
 }

@@ -2,6 +2,7 @@ package net.dugged.nessie.himmelbjerget.mixins;
 
 import com.google.common.collect.EvictingQueue;
 import net.dugged.nessie.himmelbjerget.Himmelbjerget;
+import net.dugged.nessie.himmelbjerget.INetHandlerPlayClient;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.server.S03PacketTimeUpdate;
 import net.minecraft.network.play.server.S2APacketParticles;
@@ -14,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings("UnstableApiUsage")
 @Mixin(NetHandlerPlayClient.class)
-public abstract class MixinNetHandlerPlayClient {
+public abstract class MixinNetHandlerPlayClient implements INetHandlerPlayClient {
 	@Unique
 	private final EvictingQueue<Long> himmelbjerget$slowTimeUpdates = EvictingQueue.create(60);
 
@@ -35,5 +36,10 @@ public abstract class MixinNetHandlerPlayClient {
 		final var tps = 1000 / mspt;
 		Himmelbjerget.mspt.set(2, mspt);
 		Himmelbjerget.mspt.set(3, tps);
+	}
+
+	@Override
+	public void himmelbjerget$resetSlowTimeUpdates() {
+		this.himmelbjerget$slowTimeUpdates.clear();
 	}
 }

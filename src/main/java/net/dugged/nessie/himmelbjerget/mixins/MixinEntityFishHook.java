@@ -1,6 +1,6 @@
 package net.dugged.nessie.himmelbjerget.mixins;
 
-import net.dugged.nessie.himmelbjerget.EntityFishHookDuck;
+import net.dugged.nessie.himmelbjerget.IEntityFishHook;
 import net.minecraft.entity.projectile.EntityFishHook;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityFishHook.class)
-public abstract class MixinEntityFishHook implements EntityFishHookDuck {
+public abstract class MixinEntityFishHook implements IEntityFishHook {
 	@Unique
 	private boolean himmelbjerget$shouldRender = false;
 

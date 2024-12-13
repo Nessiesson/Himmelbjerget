@@ -1,5 +1,5 @@
 package net.dugged.nessie.himmelbjerget;
 
-public interface EntityFishHookDuck {
+public interface IEntityFishHook {
 	boolean himmelbjerget$shouldRender();
 }

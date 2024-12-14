@@ -30,7 +30,6 @@
 		"MixinNBTTagString",
 		"MixinNetHandlerPlayClient",
 		"MixinPowderGrindingOverlay",
-		"MixinRendererLivingEntity",
 		"MixinRenderFish",
 		"MixinRenderGlobal",
 		"MixinRenderItemFrame",

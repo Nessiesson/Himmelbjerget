@@ -102,13 +102,7 @@ public class Himmelbjerget {
 			}
 		}
 
-		if (text.startsWith("Guild >")) {
-			try {
-				((IChatComponentText) msg).himmelbjerget$replaceFirstInText("Guild >", "Ⓖ ⊳");
-				((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText("Guild >", "Ⓖ ⊳");
-			} catch (final Throwable ignored) {
-			}
-
+		if (this.replaceAtStart(msg, text, "Coop >", "Ⓒ ⊳") || this.replaceAtStart(msg, text, "Guild >", "Ⓖ ⊳") || this.replaceAtStart(msg, text, "Friend >", "Ⓕ ⊳")) {
 			return;
 		}
 	}
@@ -129,5 +123,18 @@ public class Himmelbjerget {
 			this.fastTimeUpdates.clear();
 			((INetHandlerPlayClient) handler).himmelbjerget$resetSlowTimeUpdates();
 		}
+	}
+
+	private boolean replaceAtStart(final IChatComponent msg, final String haystack, final String needle, final String replacement) {
+		if (haystack.startsWith(needle)) {
+			try {
+				((IChatComponentText) msg).himmelbjerget$replaceFirstInText(needle, replacement);
+				((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText(needle, replacement);
+				return true;
+			} catch (final Throwable ignored) {
+			}
+		}
+
+		return false;
 	}
 }

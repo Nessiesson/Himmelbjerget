@@ -22,6 +22,7 @@
 		"MixinGuiOverlayDebug",
 		"MixinGuiPlayerTabOverlay",
 		"MixinGuiScreen",
+		"MixinItemCooldowns",
 		"MixinItemStack",
 		"MixinJarDiscoverer",
 		"MixinKeyBinding",

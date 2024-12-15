@@ -4,6 +4,7 @@ import com.google.common.collect.EvictingQueue;
 import net.dugged.nessie.himmelbjerget.mixins.IPositionedSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -26,6 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -74,6 +76,14 @@ public class Himmelbjerget {
 	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Text event) {
 		if (Minecraft.getMinecraft().gameSettings.showDebugInfo) {
 			event.left.set(5, String.format("%s, v: %+.2f, %+.2f", event.left.get(5), this.speeds.getLeft(), this.speeds.getRight()));
+		}
+	}
+	@SubscribeEvent
+	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Post event) {
+		if (event.type == RenderGameOverlayEvent.ElementType.ALL && lockMouseToggleKey.isSettingEnabled) {
+			final var width = event.resolution.getScaledWidth();
+			final var height = event.resolution.getScaledHeight();
+			Gui.drawRect(width - 4, height - 4, width - 2, height - 2, Color.RED.getRGB());
 		}
 	}
 

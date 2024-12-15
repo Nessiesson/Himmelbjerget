@@ -28,6 +28,7 @@
 		"MixinKeyBinding",
 		"MixinLongHashMap",
 		"MixinMinecraft",
+		"MixinMouseHelper",
 		"MixinNBTTagString",
 		"MixinNetHandlerPlayClient",
 		"MixinPowderGrindingOverlay",

@@ -37,6 +37,7 @@ public class Himmelbjerget {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust Rotation", Keyboard.KEY_R, "key.categories.misc");
 	public static final KeyBinding secondaryAttackKey = new KeyBinding("Attack/Destroy Secondary", -100, "key.categories.gameplay");
+	public static final ToggleSettingKeyBinding lockMouseToggleKey = new ToggleSettingKeyBinding("Toggle Lock Mouse", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = new ToggleSettingKeyBinding("Toggle Secondary Attack/Destroy Key", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = new ToggleSettingKeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
 	public static final List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
@@ -49,6 +50,7 @@ public class Himmelbjerget {
 		MinecraftForge.EVENT_BUS.register(this);
 		ClientRegistry.registerKeyBinding(adjustRotationKey);
 		ClientRegistry.registerKeyBinding(secondaryAttackKey);
+		ClientRegistry.registerKeyBinding(lockMouseToggleKey);
 		ClientRegistry.registerKeyBinding(secondaryAttackToggleKey);
 		ClientRegistry.registerKeyBinding(scoreboardVisibilityKey);
 	}

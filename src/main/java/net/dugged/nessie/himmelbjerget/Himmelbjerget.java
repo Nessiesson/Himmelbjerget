@@ -114,7 +114,7 @@ public class Himmelbjerget {
 			}
 		}
 
-		if (this.replaceAtStart(msg, text, "Coop >", "Ⓒ ⊳") || this.replaceAtStart(msg, text, "Guild >", "Ⓖ ⊳") || this.replaceAtStart(msg, text, "Friend >", "Ⓕ ⊳")) {
+		if (this.replaceAtStart(msg, text, "Coop >", "Ⓒ ⊳") || this.replaceAtStart(msg, text, "Guild >", "Ⓖ ⊳") || this.replaceAtStart(msg, text, "Friend >", "Ⓕ ⊳") || this.replaceAtStart(msg, text, "Party >", "Ⓟ ⊳")) {
 			return;
 		}
 	}

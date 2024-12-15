@@ -23,7 +23,6 @@
 		"MixinGuiPlayerTabOverlay",
 		"MixinGuiScreen",
 		"MixinItemCooldowns",
-		"MixinItemStack",
 		"MixinJarDiscoverer",
 		"MixinKeyBinding",
 		"MixinLongHashMap",

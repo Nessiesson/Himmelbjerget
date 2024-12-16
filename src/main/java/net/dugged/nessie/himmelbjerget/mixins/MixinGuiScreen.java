@@ -33,7 +33,13 @@ public abstract class MixinGuiScreen {
 	@ModifyArg(method = "renderToolTip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;drawHoveringText(Ljava/util/List;IILnet/minecraft/client/gui/FontRenderer;)V", remap = false))
 	private List<String> himmelbjerget$modifyToolTip(final List<String> lines, @Local final ItemStack stack) {
 		final var compound = stack.getTagCompound();
-		if (GuiScreen.isAltKeyDown() && compound != null) {
+		if (compound == null) {
+			return lines;
+		}
+
+		if (compound.getBoolean("HideTooltip")) {
+			lines.clear();
+		} else if (GuiScreen.isAltKeyDown()) {
 			final var tag = (NBTTagCompound) stack.getTagCompound().copy();
 			if (tag.hasKey("SkullOwner", 10)) {
 				tag.removeTag("SkullOwner");

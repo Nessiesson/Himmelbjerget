@@ -13,6 +13,7 @@
 		"MixinChatComponentText",
 		"MixinClippingHelper",
 		"MixinEffectRenderer",
+		"MixinEnderNodeHighlighter",
 		"MixinEntityEnderman",
 		"MixinEntityFishHook",
 		"MixinEntityRenderer",

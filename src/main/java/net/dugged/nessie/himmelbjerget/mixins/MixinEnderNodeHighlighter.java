@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(targets = "io/github/moulberry/notenoughupdates/miscfeatures/world/EnderNodeHighlighter")
 public abstract class MixinEnderNodeHighlighter {
 	@Dynamic
-	@Redirect(method = "isValidHighlightSpot", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/state/IBlockState;getBlock()Lnet/minecraft/block/Block;"))
+	@Redirect(method = "isValidHighlightSpot", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/block/state/IBlockState;getBlock()Lnet/minecraft/block/Block;"))
 	private Block himmelbjerget$neuhackfixendernodes(final IBlockState state) {
 		final var block = state.getBlock();
 		return block == Blocks.stained_hardened_clay && state.getValue(BlockColored.COLOR) == EnumDyeColor.PURPLE ? Blocks.end_stone : block;

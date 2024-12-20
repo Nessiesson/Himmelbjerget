@@ -28,8 +28,6 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
 @Mod(modid = Himmelbjerget.MOD_ID, name = Himmelbjerget.MOD_NAME)
@@ -42,8 +40,7 @@ public class Himmelbjerget {
 	public static final ToggleSettingKeyBinding lockMouseToggleKey = new ToggleSettingKeyBinding("Toggle Lock Mouse", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = new ToggleSettingKeyBinding("Toggle Secondary Attack/Destroy Key", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = new ToggleSettingKeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
-	public static final List<Integer> mspt = Arrays.asList(50, 20, 50, 20);
-	private final EvictingQueue<Long> fastTimeUpdates = EvictingQueue.create(10);
+	public static final TPSCalculation TPS = new TPSCalculation();
 	private final EvictingQueue<Double> lastSpeeds = EvictingQueue.create(100);
 	private final MutablePair<Double, Double> speeds = new MutablePair<>(0D, 0D);
 
@@ -78,6 +75,7 @@ public class Himmelbjerget {
 			event.left.set(5, String.format("%s, v: %+.2f, %+.2f", event.left.get(5), this.speeds.getLeft(), this.speeds.getRight()));
 		}
 	}
+
 	@SubscribeEvent
 	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Post event) {
 		if (event.type == RenderGameOverlayEvent.ElementType.ALL && lockMouseToggleKey.isSettingEnabled) {
@@ -104,13 +102,7 @@ public class Himmelbjerget {
 			}
 
 			if (text.contains("❤")) {
-				final var currentTime = System.nanoTime();
-				this.fastTimeUpdates.add(currentTime);
-				final var dt = currentTime - this.fastTimeUpdates.peek();
-				final var mspt = (int) Math.max(50, dt * 1E-7 / this.fastTimeUpdates.size());
-				final var tps = 1000 / mspt;
-				Himmelbjerget.mspt.set(0, mspt);
-				Himmelbjerget.mspt.set(1, tps);
+				TPS.calculateFastTps();
 			}
 		}
 
@@ -130,10 +122,8 @@ public class Himmelbjerget {
 
 	@SubscribeEvent
 	public void onWorldLoad(final WorldEvent.Load event) {
-		final var handler = Minecraft.getMinecraft().getNetHandler();
-		if (event.world.isRemote && handler != null) {
-			this.fastTimeUpdates.clear();
-			((INetHandlerPlayClient) handler).himmelbjerget$resetSlowTimeUpdates();
+		if (event.world.isRemote) {
+			TPS.resetTpsTimes();
 		}
 	}
 

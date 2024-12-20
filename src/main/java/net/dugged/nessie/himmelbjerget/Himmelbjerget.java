@@ -104,10 +104,12 @@ public class Himmelbjerget {
 			if (text.contains("❤")) {
 				TPS.calculateFastTps();
 			}
-		}
-
-		if (this.replaceAtStart(msg, text, "Coop >", "Ⓒ ⊳") || this.replaceAtStart(msg, text, "Guild >", "Ⓖ ⊳") || this.replaceAtStart(msg, text, "Friend >", "Ⓕ ⊳") || this.replaceAtStart(msg, text, "Party >", "Ⓟ ⊳")) {
-			return;
+		} else {
+			this.yeetRank(msg);
+			this.replaceAtStart(msg, text, "Coop >", "Ⓒ ⊳");
+			this.replaceAtStart(msg, text, "Guild >", "Ⓖ ⊳");
+			this.replaceAtStart(msg, text, "Friend >", "Ⓕ ⊳");
+			this.replaceAtStart(msg, text, "Party >", "Ⓟ ⊳");
 		}
 	}
 
@@ -127,16 +129,38 @@ public class Himmelbjerget {
 		}
 	}
 
-	private boolean replaceAtStart(final IChatComponent msg, final String haystack, final String needle, final String replacement) {
-		if (haystack.startsWith(needle)) {
-			try {
-				((IChatComponentText) msg).himmelbjerget$replaceFirstInText(needle, replacement);
-				((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText(needle, replacement);
-				return true;
-			} catch (final Throwable ignored) {
+	private void yeetRank(final IChatComponent msg) {
+		this.replaceFirst(msg, "\\[(§[0-9a-fk-or])*?(VIP|MVP)(§[0-9a-fk-or]\\+*?)*?(§[0-9a-fk-or])*?] ", "");
+
+		final var siblings = msg.getSiblings();
+		if (siblings.size() >= 3) {
+			// TODO: determine if this will ever cause a ClassCastException
+			final var first = (IChatComponentText) siblings.get(0);
+			final var second = (IChatComponentText) siblings.get(1);
+			final var third = (IChatComponentText) siblings.get(2);
+
+			if ("[VIP".equals(first.himmelbjerget$getText()) || "[MVP".equals(first.himmelbjerget$getText())) {
+				siblings.remove(0);
+				if ("+".equals(second.himmelbjerget$getText())) {
+					siblings.remove(0);
+				}
+
+				third.himmelbjerget$replaceFirstInText("^] ", "");
 			}
 		}
+	}
 
-		return false;
+	private void replaceAtStart(final IChatComponent msg, final String haystack, final String needle, final String replacement) {
+		if (haystack.startsWith(needle)) {
+			this.replaceFirst(msg, needle, replacement);
+		}
+	}
+
+	private void replaceFirst(final IChatComponent msg, final String needle, final String replacement) {
+		try {
+			((IChatComponentText) msg).himmelbjerget$replaceFirstInText(needle, replacement);
+			((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText(needle, replacement);
+		} catch (final Throwable ignored) {
+		}
 	}
 }

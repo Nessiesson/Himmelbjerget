@@ -19,4 +19,9 @@ public abstract class MixinChatComponentText implements IChatComponent, IChatCom
 	public void himmelbjerget$replaceFirstInText(final String input, final String replacement) {
 		this.text = text.replaceFirst(input, replacement);
 	}
+
+	@Override
+	public String himmelbjerget$getText() {
+		return this.text;
+	}
 }

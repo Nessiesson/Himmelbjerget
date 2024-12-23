@@ -24,4 +24,9 @@ public abstract class MixinChatComponentText implements IChatComponent, IChatCom
 	public String himmelbjerget$getText() {
 		return this.text;
 	}
+
+	@Override
+	public void himmelbjerget$setText(final String text) {
+		this.text = text;
+	}
 }

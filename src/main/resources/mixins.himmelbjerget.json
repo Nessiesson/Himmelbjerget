@@ -4,6 +4,8 @@
 	"refmap": "mixins.himmelbjerget.refmap.json",
 	"minVersion": "0.7",
 	"client": [
+		"CMixinNicerAutopet$MixinNetworkManager",
+		"CMixinNicerAutopet$MixinPetFeatures",
 		"CMixinNoOffsets",
 		"IKeyBinding",
 		"INBTTagString",

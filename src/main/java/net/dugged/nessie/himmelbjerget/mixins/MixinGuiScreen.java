@@ -33,7 +33,7 @@ public abstract class MixinGuiScreen {
 	@ModifyArg(method = "renderToolTip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;drawHoveringText(Ljava/util/List;IILnet/minecraft/client/gui/FontRenderer;)V", remap = false))
 	private List<String> himmelbjerget$modifyToolTip(final List<String> lines, @Local final ItemStack stack) {
 		final var compound = stack.getTagCompound();
-		if (compound == null) {
+		if (compound == null || lines.isEmpty()) {
 			return lines;
 		}
 

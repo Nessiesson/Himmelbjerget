@@ -42,7 +42,8 @@ public class Himmelbjerget {
 	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = new ToggleSettingKeyBinding("Toggle Secondary Attack/Destroy Key", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = new ToggleSettingKeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
 	public static final TPSCalculation TPS = new TPSCalculation();
-	private static final Pattern experienceMatch = Pattern.compile("(\\(\\d+?\\.\\d)%\\)");
+	private static final Pattern experienceMatchDecimal = Pattern.compile("(\\(\\d+?\\.\\d)%\\)");
+	private static final Pattern experienceMatchInteger = Pattern.compile("(\\(\\d+?)%\\)");
 	private final EvictingQueue<Double> lastSpeeds = EvictingQueue.create(100);
 	private final MutablePair<Double, Double> speeds = new MutablePair<>(0D, 0D);
 
@@ -101,7 +102,8 @@ public class Himmelbjerget {
 				final var replace = (IChatComponentText) msg;
 				replace.himmelbjerget$replaceFirstInText("✎ Mana", "✎");
 				replace.himmelbjerget$replaceFirstInText("❈ Defense", "❈");
-				replace.himmelbjerget$setText(experienceMatch.matcher(replace.himmelbjerget$getText()).replaceAll("$10%)"));
+				replace.himmelbjerget$setText(experienceMatchDecimal.matcher(replace.himmelbjerget$getText()).replaceAll("$10%)"));
+				replace.himmelbjerget$setText(experienceMatchInteger.matcher(replace.himmelbjerget$getText()).replaceAll("$1.00%)"));
 			}
 
 			if (text.contains("❤")) {

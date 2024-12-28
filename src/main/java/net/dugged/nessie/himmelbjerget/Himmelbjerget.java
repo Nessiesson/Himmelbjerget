@@ -38,6 +38,7 @@ public class Himmelbjerget {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust Rotation", Keyboard.KEY_R, "key.categories.misc");
 	public static final KeyBinding secondaryAttackKey = new KeyBinding("Attack/Destroy Secondary", -100, "key.categories.gameplay");
+	public static final ToggleSettingKeyBinding customOverlayToggleKey = new ToggleSettingKeyBinding("Toggle Custom Overlay", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final ToggleSettingKeyBinding lockMouseToggleKey = new ToggleSettingKeyBinding("Toggle Lock Mouse", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = new ToggleSettingKeyBinding("Toggle Secondary Attack/Destroy Key", Keyboard.KEY_NONE, "key.categories.misc");
 	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = new ToggleSettingKeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
@@ -52,6 +53,7 @@ public class Himmelbjerget {
 		MinecraftForge.EVENT_BUS.register(this);
 		ClientRegistry.registerKeyBinding(adjustRotationKey);
 		ClientRegistry.registerKeyBinding(secondaryAttackKey);
+		ClientRegistry.registerKeyBinding(customOverlayToggleKey);
 		ClientRegistry.registerKeyBinding(lockMouseToggleKey);
 		ClientRegistry.registerKeyBinding(secondaryAttackToggleKey);
 		ClientRegistry.registerKeyBinding(scoreboardVisibilityKey);
@@ -76,6 +78,8 @@ public class Himmelbjerget {
 	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Text event) {
 		if (Minecraft.getMinecraft().gameSettings.showDebugInfo) {
 			event.left.set(5, String.format("%s, v: %+.2f, %+.2f", event.left.get(5), this.speeds.getLeft(), this.speeds.getRight()));
+		} else if (customOverlayToggleKey.isSettingEnabled) {
+			event.left.add(String.format("v: %+.2f, %+.2f", this.speeds.getLeft(), this.speeds.getRight()));
 		}
 	}
 

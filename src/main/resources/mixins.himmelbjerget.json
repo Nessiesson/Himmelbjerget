@@ -34,7 +34,6 @@
 		"MixinMouseHelper",
 		"MixinNBTTagString",
 		"MixinNetHandlerPlayClient",
-		"MixinPowderGrindingOverlay",
 		"MixinRenderFish",
 		"MixinRenderGlobal",
 		"MixinRenderItemFrame",

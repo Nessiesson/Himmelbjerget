@@ -1,4 +1,4 @@
-package net.dugged.nessie.himmelbjerget.mixins;
+package net.dugged.nessie.himmelbjerget.mixins.neu;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;

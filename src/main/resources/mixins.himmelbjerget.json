@@ -4,8 +4,6 @@
 	"refmap": "mixins.himmelbjerget.refmap.json",
 	"minVersion": "0.7",
 	"client": [
-		"CMixinNicerAutopet$MixinNetworkManager",
-		"CMixinNicerAutopet$MixinPetFeatures",
 		"CMixinNoOffsets",
 		"IKeyBinding",
 		"INBTTagString",
@@ -15,8 +13,6 @@
 		"MixinChatComponentText",
 		"MixinClippingHelper",
 		"MixinEffectRenderer",
-		"MixinEnchantingSolvers",
-		"MixinEnderNodeHighlighter",
 		"MixinEntityEnderman",
 		"MixinEntityFishHook",
 		"MixinEntityRenderer",
@@ -26,7 +22,6 @@
 		"MixinGuiOverlayDebug",
 		"MixinGuiPlayerTabOverlay",
 		"MixinGuiScreen",
-		"MixinItemCooldowns",
 		"MixinJarDiscoverer",
 		"MixinKeyBinding",
 		"MixinLongHashMap",
@@ -42,6 +37,11 @@
 		"MixinTextureMap",
 		"MixinWorld",
 		"MixinWorldClient",
-		"MixinYggdrasilMinecraftSessionService"
+		"MixinYggdrasilMinecraftSessionService",
+		"neu.MixinEnchantingSolvers",
+		"neu.MixinEnderNodeHighlighter",
+		"neu.MixinItemCooldowns",
+		"skytils.CMixinNicerAutopet$MixinNetworkManager",
+		"skytils.CMixinNicerAutopet$MixinPetFeatures"
 	]
 }

@@ -1,4 +1,4 @@
-package net.dugged.nessie.himmelbjerget.mixins;
+package net.dugged.nessie.himmelbjerget.mixins.skytils;
 
 import io.netty.channel.ChannelHandlerContext;
 import net.dugged.nessie.himmelbjerget.IChatComponentText;

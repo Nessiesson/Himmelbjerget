@@ -41,6 +41,7 @@
 		"neu.MixinEnchantingSolvers",
 		"neu.MixinEnderNodeHighlighter",
 		"neu.MixinItemCooldowns",
+		"skyhanni.MixinPlayerNameFormatter",
 		"skytils.CMixinNicerAutopet$MixinNetworkManager",
 		"skytils.CMixinNicerAutopet$MixinPetFeatures"
 	]

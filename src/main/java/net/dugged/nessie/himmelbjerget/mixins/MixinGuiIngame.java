@@ -2,6 +2,7 @@ package net.dugged.nessie.himmelbjerget.mixins;
 
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.item.ItemStack;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,5 +31,10 @@ public abstract class MixinGuiIngame {
 	@ModifyConstant(method = "renderScoreboard", constant = @Constant(stringValue = ": "))
 	private String himmelbjerget$trimUnnecessarySpacing(final String constant) {
 		return "";
+	}
+
+	@Redirect(method = "renderHotbarItem", at = @At(value = "FIELD", target = "Lnet/minecraft/item/ItemStack;animationsToGo:I", opcode = Opcodes.GETFIELD))
+	private int himmelbjerget$noPickupAnimation(final ItemStack instance) {
+		return 0;
 	}
 }

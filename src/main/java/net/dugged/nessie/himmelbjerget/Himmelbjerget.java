@@ -113,11 +113,6 @@ public class Himmelbjerget {
 			if (text.contains("❤")) {
 				TPS.calculateFastTps();
 			}
-		} else {
-			this.replaceAtStart(msg, text, "Coop >", "Ⓒ ⊳");
-			this.replaceAtStart(msg, text, "Guild >", "Ⓖ ⊳");
-			this.replaceAtStart(msg, text, "Friend >", "Ⓕ ⊳");
-			this.replaceAtStart(msg, text, "Party >", "Ⓟ ⊳");
 		}
 	}
 
@@ -134,16 +129,6 @@ public class Himmelbjerget {
 	public void onWorldLoad(final WorldEvent.Load event) {
 		if (event.world.isRemote) {
 			TPS.resetTpsTimes();
-		}
-	}
-
-	private void replaceAtStart(final IChatComponent msg, final String haystack, final String needle, final String replacement) {
-		if (haystack.startsWith(needle)) {
-			try {
-				((IChatComponentText) msg).himmelbjerget$replaceFirstInText(needle, replacement);
-				((IChatComponentText) msg.getSiblings().get(0)).himmelbjerget$replaceFirstInText(needle, replacement);
-			} catch (final Throwable ignored) {
-			}
 		}
 	}
 }

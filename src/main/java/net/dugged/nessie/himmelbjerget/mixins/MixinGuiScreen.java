@@ -1,6 +1,8 @@
 package net.dugged.nessie.himmelbjerget.mixins;
 
 import gg.essential.lib.mixinextras.sugar.Local;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockStainedGlassPane;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.event.ClickEvent;
@@ -34,6 +36,11 @@ public abstract class MixinGuiScreen {
 	private List<String> himmelbjerget$modifyToolTip(final List<String> lines, @Local final ItemStack stack) {
 		final var compound = stack.getTagCompound();
 		if (compound == null || lines.isEmpty()) {
+			return lines;
+		}
+		final var advancedItemTooltips = Minecraft.getMinecraft().gameSettings.advancedItemTooltips;
+		if (!advancedItemTooltips && " ".equals(EnumChatFormatting.getTextWithoutFormattingCodes(stack.getDisplayName()))) {
+			lines.clear();
 			return lines;
 		}
 
@@ -83,7 +90,7 @@ public abstract class MixinGuiScreen {
 			}
 
 			final var nbt = EnumChatFormatting.GRAY + tag.toString();
-			if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips) {
+			if (advancedItemTooltips) {
 				lines.set(lines.size() - 1, nbt);
 			} else {
 				lines.add("");

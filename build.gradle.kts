@@ -33,8 +33,14 @@ loom {
 	mixin.defaultRefmapName.set("mixins.$modid.refmap.json")
 }
 
-sourceSets.main {
-	output.setResourcesDir(java.classesDirectory)
+sourceSets {
+	val dummy by creating
+	main {
+		output.setResourcesDir(java.classesDirectory)
+		dummy.compileClasspath += compileClasspath
+		compileClasspath += dummy.output
+		output.setResourcesDir(java.classesDirectory)
+	}
 }
 
 repositories {

@@ -3,6 +3,7 @@ package net.dugged.nessie.himmelbjerget.mixins;
 import net.minecraft.client.particle.EntityLargeExplodeFX;
 import net.minecraft.client.renderer.GlStateManager;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -10,6 +11,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityLargeExplodeFX.class)
 public abstract class MixinEntityLargeExplodeFX {
+	@Shadow
+	private float field_70582_as;
+
+	@Inject(method = "<init>", at = @At("RETURN"))
+	private void himmelbjerget$restrictParticleSize(final CallbackInfo ci) {
+		this.field_70582_as = Math.min(this.field_70582_as, 1.5F);
+	}
+
 	@ModifyArg(method = "renderParticle", index = 3, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;color(FFFF)V"))
 	private float himmelbjerget$makeTransparentGlStateManager(final float alpha) {
 		return 0.4F;

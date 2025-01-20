@@ -9,6 +9,7 @@
 		"INBTTagString",
 		"IPositionedSound",
 		"MixinASMModParser",
+		"MixinBlockModelShapes",
 		"MixinChatComponentText",
 		"MixinClippingHelper",
 		"MixinEffectRenderer",
@@ -45,5 +46,8 @@
 		"skyhanni.MixinPlayerNameFormatter",
 		"skytils.CMixinNicerAutopet$MixinNetworkManager",
 		"skytils.CMixinNicerAutopet$MixinPetFeatures"
+	],
+	"mixins": [
+		"MixinBlockBarrier"
 	]
 }

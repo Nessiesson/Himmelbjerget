@@ -15,6 +15,7 @@
 		"MixinEntityEnderman",
 		"MixinEntityFishHook",
 		"MixinEntityLargeExplodeFX",
+		"MixinEntityLivingBase",
 		"MixinEntityRenderer",
 		"MixinGameSettings",
 		"MixinGuiIngame",

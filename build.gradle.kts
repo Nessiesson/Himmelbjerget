@@ -93,6 +93,7 @@ tasks {
 		inputFile.set(shadowJar.get().archiveFile)
 	}
 	named<ShadowJar>("shadowJar") {
+		destinationDirectory.set(layout.buildDirectory.dir("tmp"))
 		archiveClassifier.set("dev")
 		configurations = listOf(shade)
 		// TODO: Work out why relocate() seemingly isn't working. :concern:

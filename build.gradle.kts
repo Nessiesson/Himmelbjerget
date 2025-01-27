@@ -95,6 +95,7 @@ tasks {
 	named<ShadowJar>("shadowJar") {
 		archiveClassifier.set("dev")
 		configurations = listOf(shade)
+		// TODO: Work out why relocate() seemingly isn't working. :concern:
 		relocate("com.github.bawnorton.mixinsquared", "$baseGroup.mixinsquared")
 		mergeServiceFiles()
 	}

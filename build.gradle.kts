@@ -45,6 +45,7 @@ sourceSets {
 
 repositories {
 	maven("https://repo.spongepowered.org/repository/maven-public")
+	maven("https://maven.bawnorton.com/releases")
 }
 
 val shade: Configuration by configurations.creating {
@@ -54,6 +55,9 @@ val shade: Configuration by configurations.creating {
 dependencies {
 	implementation("gg.essential:loader-launchwrapper:1.2.3")
 	implementation("gg.essential:essential-1.8.9-forge:17141+gd6f4cfd3a8")
+
+	annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0")
+	shade("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0")
 
 	annotationProcessor("org.spongepowered:mixin:0.8.7:processor")
 	compileOnly("org.spongepowered:mixin:0.8.4")
@@ -91,5 +95,7 @@ tasks {
 	named<ShadowJar>("shadowJar") {
 		archiveClassifier.set("dev")
 		configurations = listOf(shade)
+		relocate("com.github.bawnorton.mixinsquared", "$baseGroup.mixinsquared")
+		mergeServiceFiles()
 	}
 }

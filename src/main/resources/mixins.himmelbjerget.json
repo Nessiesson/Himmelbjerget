@@ -2,6 +2,7 @@
 	"compatibilityLevel": "JAVA_8",
 	"package": "net.dugged.nessie.himmelbjerget.mixins",
 	"refmap": "mixins.himmelbjerget.refmap.json",
+	"plugin": "net.dugged.nessie.himmelbjerget.HimmelbjergetMixinConfigPlugin",
 	"minVersion": "0.7",
 	"client": [
 		"CMixinNoOffsets",
@@ -44,6 +45,7 @@
 		"neu.MixinEnderNodeHighlighter",
 		"neu.MixinItemCooldowns",
 		"neu.MixinNEUManager",
+		"neu.MixinRenderFishSquared",
 		"skyhanni.MixinIslandGraphs",
 		"skyhanni.MixinPlayerNameFormatter",
 		"skytils.CMixinNicerAutopet$MixinNetworkManager",

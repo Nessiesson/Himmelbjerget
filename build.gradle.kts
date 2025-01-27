@@ -44,7 +44,7 @@ sourceSets {
 }
 
 repositories {
-	maven("https://repo.spongepowered.org/repository/maven-public/")
+	maven("https://repo.spongepowered.org/repository/maven-public")
 }
 
 val shade: Configuration by configurations.creating {

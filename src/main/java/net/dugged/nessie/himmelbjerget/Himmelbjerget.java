@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +29,8 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -38,10 +41,13 @@ public class Himmelbjerget {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust Rotation", Keyboard.KEY_R, "key.categories.misc");
 	public static final KeyBinding secondaryAttackKey = new KeyBinding("Attack/Destroy Secondary", -100, "key.categories.gameplay");
-	public static final ToggleSettingKeyBinding customOverlayToggleKey = new ToggleSettingKeyBinding("Toggle Custom Overlay", Keyboard.KEY_NONE, "key.categories.misc");
-	public static final ToggleSettingKeyBinding lockMouseToggleKey = new ToggleSettingKeyBinding("Toggle Lock Mouse", Keyboard.KEY_NONE, "key.categories.misc");
-	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = new ToggleSettingKeyBinding("Toggle Secondary Attack/Destroy Key", Keyboard.KEY_NONE, "key.categories.misc");
-	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = new ToggleSettingKeyBinding("Toggle Scoreboard Visibility", Keyboard.KEY_Y, "key.categories.misc", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
+	private static final List<ToggleSettingKeyBinding> keybinds = new ArrayList<>();
+	public static final ToggleSettingKeyBinding customOverlayToggleKey = registerToggleKeyBind("Toggle Custom Overlay");
+	public static final ToggleSettingKeyBinding lockMouseToggleKey = registerToggleKeyBind("Toggle Lock Mouse");
+	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = registerToggleKeyBind("Toggle Secondary Attack/Destroy Key");
+	@SuppressWarnings("unused")
+	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = registerToggleKeyBind("Toggle Scoreboard Visibility", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
+
 	public static final TPSCalculation TPS = new TPSCalculation();
 	private static final Pattern experienceMatchDecimal = Pattern.compile("(\\(\\d+?\\.\\d)%\\)");
 	private static final Pattern experienceMatchInteger = Pattern.compile("(\\(\\d+?)%\\)");
@@ -53,10 +59,7 @@ public class Himmelbjerget {
 		MinecraftForge.EVENT_BUS.register(this);
 		ClientRegistry.registerKeyBinding(adjustRotationKey);
 		ClientRegistry.registerKeyBinding(secondaryAttackKey);
-		ClientRegistry.registerKeyBinding(customOverlayToggleKey);
-		ClientRegistry.registerKeyBinding(lockMouseToggleKey);
-		ClientRegistry.registerKeyBinding(secondaryAttackToggleKey);
-		ClientRegistry.registerKeyBinding(scoreboardVisibilityKey);
+		keybinds.forEach(ClientRegistry::registerKeyBinding);
 	}
 
 	@SubscribeEvent
@@ -116,6 +119,11 @@ public class Himmelbjerget {
 		}
 	}
 
+	@SubscribeEvent
+	public void onKeyEvent(final InputEvent.KeyInputEvent event) {
+		keybinds.stream().filter(KeyBinding::isPressed).forEach(ToggleSettingKeyBinding::toggle);
+	}
+
 	// TODO: Work out if this breaks any sounds that I care about.
 	@SubscribeEvent
 	public void onSoundEvent(final PlaySoundEvent event) {
@@ -130,5 +138,16 @@ public class Himmelbjerget {
 		if (event.world.isRemote) {
 			TPS.resetTpsTimes();
 		}
+	}
+
+	private static ToggleSettingKeyBinding registerToggleKeyBind(final String description) {
+		return registerToggleKeyBind(description, () -> {
+		});
+	}
+
+	private static ToggleSettingKeyBinding registerToggleKeyBind(final String description, final Runnable onToggle) {
+		final var keybind = new ToggleSettingKeyBinding(description, Keyboard.KEY_NONE, "key.categories.misc", onToggle);
+		keybinds.add(keybind);
+		return keybind;
 	}
 }

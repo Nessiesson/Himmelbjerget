@@ -27,7 +27,6 @@
 		"MixinGuiPlayerTabOverlay",
 		"MixinGuiScreen",
 		"MixinJarDiscoverer",
-		"MixinKeyBinding",
 		"MixinLongHashMap",
 		"MixinMinecraft",
 		"MixinMouseHelper",

@@ -96,7 +96,7 @@ tasks {
 		destinationDirectory.set(layout.buildDirectory.dir("tmp"))
 		archiveClassifier.set("dev")
 		configurations = listOf(shade)
-		relocate("com.bawnorton.mixinsquared", "$baseGroup.mixinsquared")
+		relocate("com.bawnorton.mixinsquared", "$baseGroup.deps.mixinsquared")
 		mergeServiceFiles()
 	}
 }

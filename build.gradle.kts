@@ -96,8 +96,7 @@ tasks {
 		destinationDirectory.set(layout.buildDirectory.dir("tmp"))
 		archiveClassifier.set("dev")
 		configurations = listOf(shade)
-		// TODO: Work out why relocate() seemingly isn't working. :concern:
-		relocate("com.github.bawnorton.mixinsquared", "$baseGroup.mixinsquared")
+		relocate("com.bawnorton.mixinsquared", "$baseGroup.mixinsquared")
 		mergeServiceFiles()
 	}
 }

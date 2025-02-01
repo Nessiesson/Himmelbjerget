@@ -48,6 +48,7 @@
 		"skyhanni.MixinIslandGraphs",
 		"skyhanni.MixinPlayerNameFormatter",
 		"skytils.CMixinNicerAutopet$MixinNetworkManager",
-		"skytils.CMixinNicerAutopet$MixinPetFeatures"
+		"skytils.CMixinNicerAutopet$MixinPetFeatures",
+		"skytils.MixinCreeperSolver"
 	]
 }

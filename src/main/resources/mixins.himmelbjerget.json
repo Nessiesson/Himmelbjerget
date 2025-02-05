@@ -42,6 +42,7 @@
 		"MixinWorldClient",
 		"MixinYggdrasilMinecraftSessionService",
 		"neu.MixinEnderNodeHighlighter",
+		"neu.MixinGuiItemRecipe",
 		"neu.MixinItemCooldowns",
 		"neu.MixinNEUManager",
 		"neu.MixinRenderFishSquared",

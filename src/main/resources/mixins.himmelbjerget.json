@@ -29,6 +29,7 @@
 		"MixinJarDiscoverer",
 		"MixinLongHashMap",
 		"MixinMinecraft",
+		"MixinMinecraft_ClearRenderersWorldLeak",
 		"MixinMouseHelper",
 		"MixinNBTTagString",
 		"MixinNetHandlerPlayClient",

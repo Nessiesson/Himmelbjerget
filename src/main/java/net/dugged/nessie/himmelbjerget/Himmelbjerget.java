@@ -1,7 +1,10 @@
 package net.dugged.nessie.himmelbjerget;
 
 import com.google.common.collect.EvictingQueue;
+import io.github.moulberry.notenoughupdates.NotEnoughUpdates;
+import io.github.moulberry.notenoughupdates.util.brigadier.BrigadierRoot;
 import net.dugged.nessie.himmelbjerget.mixins.IPositionedSound;
+import net.dugged.nessie.himmelbjerget.mixins.neu.IBetterContainers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
@@ -137,6 +140,12 @@ public class Himmelbjerget {
 	public void onWorldLoad(final WorldEvent.Load event) {
 		if (event.world.isRemote) {
 			TPS.resetTpsTimes();
+			BrigadierRoot.INSTANCE.updateHooks();
+			NotEnoughUpdates.INSTANCE.overlay.guiGroup.recalculate();
+			final var lastSlots = IBetterContainers.getLastSlots();
+			if (lastSlots != null) {
+				lastSlots.clear();
+			}
 		}
 	}
 

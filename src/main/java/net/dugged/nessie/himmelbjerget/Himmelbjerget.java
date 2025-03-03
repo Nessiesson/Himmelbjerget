@@ -8,6 +8,8 @@ import net.dugged.nessie.himmelbjerget.mixins.neu.IBetterContainers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiIngameMenu;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -15,6 +17,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -119,6 +122,13 @@ public class Himmelbjerget {
 			if (text.contains("❤")) {
 				TPS.calculateFastTps();
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onGuiScreenPreActionPerformed(final GuiScreenEvent.ActionPerformedEvent.Pre event) {
+		if (event.gui instanceof GuiIngameMenu && event.button.id == 1 && !GuiScreen.isShiftKeyDown()) {
+			event.setCanceled(true);
 		}
 	}
 

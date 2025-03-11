@@ -27,6 +27,7 @@
 		"MixinGuiPlayerTabOverlay",
 		"MixinGuiScreen",
 		"MixinJarDiscoverer",
+		"MixinLayerArmorBase",
 		"MixinLongHashMap",
 		"MixinMinecraft",
 		"MixinMinecraft_ClearRenderersWorldLeak",

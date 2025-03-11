@@ -1,4 +1,4 @@
-package net.dugged.nessie.himmelbjerget.mixins;
+package net.dugged.nessie.himmelbjerget.mixins.performance;
 
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import org.spongepowered.asm.mixin.Mixin;

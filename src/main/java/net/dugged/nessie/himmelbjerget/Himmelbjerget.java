@@ -8,6 +8,7 @@ import net.dugged.nessie.himmelbjerget.mixins.neu.IBetterContainers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
@@ -47,6 +48,7 @@ public class Himmelbjerget {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust Rotation", Keyboard.KEY_R, "key.categories.misc");
 	public static final KeyBinding secondaryAttackKey = new KeyBinding("Attack/Destroy Secondary", -100, "key.categories.gameplay");
+	public static final KeyBinding secondaryChatKey = new KeyBinding("Open Chat Chat Secondary", -100, "key.categories.multiplayer");
 	private static final List<ToggleSettingKeyBinding> keybinds = new ArrayList<>();
 	public static final ToggleSettingKeyBinding customOverlayToggleKey = registerToggleKeyBind("Toggle Custom Overlay");
 	public static final ToggleSettingKeyBinding lockMouseToggleKey = registerToggleKeyBind("Toggle Lock Mouse");
@@ -65,6 +67,7 @@ public class Himmelbjerget {
 		MinecraftForge.EVENT_BUS.register(this);
 		ClientRegistry.registerKeyBinding(adjustRotationKey);
 		ClientRegistry.registerKeyBinding(secondaryAttackKey);
+		ClientRegistry.registerKeyBinding(secondaryChatKey);
 		keybinds.forEach(ClientRegistry::registerKeyBinding);
 	}
 
@@ -135,6 +138,11 @@ public class Himmelbjerget {
 	@SubscribeEvent
 	public void onKeyEvent(final InputEvent.KeyInputEvent event) {
 		keybinds.stream().filter(KeyBinding::isPressed).forEach(ToggleSettingKeyBinding::toggle);
+		final var mc = Minecraft.getMinecraft();
+		final var screen = mc.currentScreen;
+		if ((screen == null || screen.allowUserInput) && secondaryChatKey.isPressed()) {
+			mc.displayGuiScreen(new GuiChat());
+		}
 	}
 
 	// TODO: Work out if this breaks any sounds that I care about.

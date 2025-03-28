@@ -1,6 +1,5 @@
 package net.dugged.nessie.himmelbjerget.mixins.skyhanni;
 
-import net.dugged.nessie.himmelbjerget.Himmelbjerget;
 import net.dugged.nessie.himmelbjerget.IChatComponentText;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -24,8 +23,8 @@ public abstract class MixinPlayerNameFormatter {
 	private static final Pattern himmelbjerget$rankStart = Pattern.compile("^(?:§.)*?\\[");
 
 	@Dynamic
-	@Redirect(method = "onPlayerAllChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ChatComponentText;appendSibling(Lnet/minecraft/util/IChatComponent;)Lnet/minecraft/util/IChatComponent;", ordinal = 2, remap = true))
-	private IChatComponent himmelbjerget$makeSameChatColorGreatAgain(final ChatComponentText instance, final IChatComponent component) {
+	@Redirect(method = "onPlayerAllChat", at = @At(value = "INVOKE", target = "Lat/hannibal2/skyhanni/utils/compat/TextCompatKt;appendComponent(Lnet/minecraft/util/IChatComponent;Lnet/minecraft/util/IChatComponent;)Lnet/minecraft/util/IChatComponent;", ordinal = 2))
+	private IChatComponent himmelbjerget$makeSameChatColorGreatAgain(final IChatComponent instance, final IChatComponent component) {
 		final var siblings = component.getSiblings();
 		if (!siblings.isEmpty()) {
 			final var style = siblings.get(0).getChatStyle();

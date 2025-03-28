@@ -54,8 +54,6 @@
 		"performance.MixinWorld",
 		"skyhanni.MixinIslandGraphs",
 		"skyhanni.MixinPlayerNameFormatter",
-		"skytils.CMixinNicerAutopet$MixinNetworkManager",
-		"skytils.CMixinNicerAutopet$MixinPetFeatures",
 		"skytils.MixinCreeperSolver"
 	]
 }

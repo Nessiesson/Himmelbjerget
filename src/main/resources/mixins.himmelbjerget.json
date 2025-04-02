@@ -34,6 +34,7 @@
 		"MixinNetHandlerPlayClient",
 		"MixinRenderFish",
 		"MixinRenderGlobal",
+		"MixinRenderItem",
 		"MixinRenderItemFrame",
 		"MixinS3EPacketTeams",
 		"MixinScoreboard",

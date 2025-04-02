@@ -1,11 +1,11 @@
 package net.dugged.nessie.himmelbjerget.mixins;
 
 import at.hannibal2.skyhanni.utils.ItemUtils;
+import at.hannibal2.skyhanni.utils.LorenzRarity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.EnumDyeColor;
@@ -27,9 +27,9 @@ public abstract class MixinRenderItem {
 
 		final var attributes = stack.getSubCompound("ExtraAttributes", false);
 		if (attributes != null && attributes.getInteger("rarity_upgrades") != 0) {
-			final var rarity = ItemUtils.INSTANCE.getItemRarityOrCommon(stack).oneBelow(false);
-			if (rarity != null) {
-				this.himmelbjerget$draw(xPosition, yPosition, rarity.getColor().toDyeColor());
+			final var rarity = ItemUtils.INSTANCE.getItemRarityOrCommon(stack);
+			if (rarity != null && rarity != LorenzRarity.COMMON) {
+				this.himmelbjerget$draw(xPosition, yPosition, rarity.oneBelow(false).getColor().toDyeColor());
 			}
 		}
 	}
@@ -53,7 +53,7 @@ public abstract class MixinRenderItem {
 		renderer.pos(x + 16D, y + 0D, 0D).color(r, g, b, 255).endVertex();
 		renderer.pos(x + 12D, y + 0D, 0D).color(r, g, b, 255).endVertex();
 		renderer.pos(x + 16D, y + 4D, 0D).color(r, g, b, 255).endVertex();
-		Tessellator.getInstance().draw();
+		tessellator.draw();
 
 		GlStateManager.enableAlpha();
 		GlStateManager.enableTexture2D();

@@ -26,6 +26,7 @@ public abstract class MixinGuiItemRecipe {
 			if (id.startsWith("ENCHANTED_COOKIE")) return -1;
 			if (id.startsWith("ENCHANTED_GOLDEN_CARROT")) return -1;
 			if (id.startsWith("ENCHANTED_SUGAR_CANE")) return -1;
+			if (id.startsWith("ENCHANTED_WHEAT")) return -1;
 			if (id.startsWith("ENCHANTED")) return -1;
 		}
 		return 1;

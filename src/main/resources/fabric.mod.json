@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"id": "himmelbjerget",
+	"version": "${version}",
+	"name": "Himmelbjerget",
+	"description": "stuff and things for hypixel skyblock hax",
+	"authors": [
+		"nessiesson"
+	],
+	"license": "MIT",
+	"icon": "assets/himmelbjerget/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"net.dugged.nessie.himmelbjerget.Himmelbjerget"
+		]
+	},
+	"mixins": [
+		"himmelbjerget.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

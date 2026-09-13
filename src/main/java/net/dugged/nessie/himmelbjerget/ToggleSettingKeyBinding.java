@@ -1,18 +1,19 @@
 package net.dugged.nessie.himmelbjerget;
 
-import net.minecraft.client.settings.KeyBinding;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
 
-public class ToggleSettingKeyBinding extends KeyBinding {
+public class ToggleSettingKeyBinding extends KeyMapping {
 	public boolean isSettingEnabled = false;
-	private final Runnable runnable;
+	private final Runnable onToggle;
 
-	public ToggleSettingKeyBinding(final String description, final int key, final String category, final Runnable onToggle) {
-		super(description, key, category);
-		this.runnable = onToggle;
+	public ToggleSettingKeyBinding(final String translationKey, final int keyCode, final KeyMapping.Category category, final Runnable onToggle) {
+		super(translationKey, InputConstants.Type.KEYSYM, keyCode, category);
+		this.onToggle = onToggle;
 	}
 
 	public void toggle() {
 		this.isSettingEnabled = !this.isSettingEnabled;
-		runnable.run();
+		this.onToggle.run();
 	}
 }

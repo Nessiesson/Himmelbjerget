@@ -1,179 +1,78 @@
 package net.dugged.nessie.himmelbjerget;
 
-import com.google.common.collect.EvictingQueue;
-import io.github.moulberry.notenoughupdates.NotEnoughUpdates;
-import io.github.moulberry.notenoughupdates.util.brigadier.BrigadierRoot;
-import net.dugged.nessie.himmelbjerget.mixins.IPositionedSound;
-import net.dugged.nessie.himmelbjerget.mixins.neu.IBetterContainers;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.GuiIngameForge;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.sound.PlaySoundEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.resources.Identifier;
+import org.lwjgl.glfw.GLFW;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
-@SuppressWarnings("UnstableApiUsage")
-@Mod(modid = Himmelbjerget.MOD_ID, name = Himmelbjerget.MOD_NAME)
-public class Himmelbjerget {
+public class Himmelbjerget implements ClientModInitializer {
 	public static final String MOD_NAME = "Himmelbjerget";
 	public static final String MOD_ID = "himmelbjerget";
-	public static final Logger LOGGER = LogManager.getLogger();
-	public static final KeyBinding adjustRotationKey = new KeyBinding("Adjust Rotation", Keyboard.KEY_R, "key.categories.misc");
-	public static final KeyBinding secondaryAttackKey = new KeyBinding("Attack/Destroy Secondary", -100, "key.categories.gameplay");
-	public static final KeyBinding secondaryChatKey = new KeyBinding("Open Chat Chat Secondary", -100, "key.categories.multiplayer");
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	private static final KeyMapping.Category CATEGORY_MISC = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "misc"));
+
+	public static final KeyMapping adjustRotationKey = new KeyMapping("key.himmelbjerget.adjust_rotation", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, CATEGORY_MISC);
+	public static final KeyMapping secondaryAttackKey = new KeyMapping("key.himmelbjerget.secondary_attack", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, CATEGORY_MISC);
+	public static final KeyMapping secondaryChatKey = new KeyMapping("key.himmelbjerget.secondary_chat", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, CATEGORY_MISC);
+
 	private static final List<ToggleSettingKeyBinding> keybinds = new ArrayList<>();
-	public static final ToggleSettingKeyBinding customOverlayToggleKey = registerToggleKeyBind("Toggle Custom Overlay");
-	public static final ToggleSettingKeyBinding lockMouseToggleKey = registerToggleKeyBind("Toggle Lock Mouse");
-	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = registerToggleKeyBind("Toggle Secondary Attack/Destroy Key");
-	@SuppressWarnings("unused")
-	public static final ToggleSettingKeyBinding scoreboardVisibilityKey = registerToggleKeyBind("Toggle Scoreboard Visibility", () -> GuiIngameForge.renderObjective = !GuiIngameForge.renderObjective);
+	public static final ToggleSettingKeyBinding lockMouseToggleKey = registerToggleKeyBind("key.himmelbjerget.toggle_lock_mouse");
+	public static final ToggleSettingKeyBinding secondaryAttackToggleKey = registerToggleKeyBind("key.himmelbjerget.toggle_secondary_attack");
 
-	public static final TPSCalculation TPS = new TPSCalculation();
-	private static final Pattern experienceMatchDecimal = Pattern.compile("(\\(\\d+?\\.\\d)%\\)");
-	private static final Pattern experienceMatchInteger = Pattern.compile("(\\(\\d+?)%\\)");
-	private final EvictingQueue<Double> lastSpeeds = EvictingQueue.create(100);
-	private final MutablePair<Double, Double> speeds = new MutablePair<>(0D, 0D);
 
-	@Mod.EventHandler
-	public void preInit(final FMLPreInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(this);
-		ClientRegistry.registerKeyBinding(adjustRotationKey);
-		ClientRegistry.registerKeyBinding(secondaryAttackKey);
-		ClientRegistry.registerKeyBinding(secondaryChatKey);
-		keybinds.forEach(ClientRegistry::registerKeyBinding);
-	}
+	@Override
+	public void onInitializeClient() {
+		KeyMappingHelper.registerKeyMapping(adjustRotationKey);
+		KeyMappingHelper.registerKeyMapping(secondaryAttackKey);
+		KeyMappingHelper.registerKeyMapping(secondaryChatKey);
+		keybinds.forEach(KeyMappingHelper::registerKeyMapping);
 
-	@SubscribeEvent
-	public void onPlayerTick(final TickEvent.PlayerTickEvent event) {
-		if (event.phase == TickEvent.Phase.END && event.player instanceof EntityPlayerSP) {
-			final var player = event.player;
-			final var dX = player.posX - player.prevPosX;
-			final var dY = player.posY - player.prevPosY;
-			final var dZ = player.posZ - player.prevPosZ;
-			final var speed = 20D * MathHelper.sqrt_double(dX * dX + dY * dY + dZ * dZ);
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			keybinds.forEach(kb -> {
+				while (kb.consumeClick()) {
+					kb.toggle();
+				}
+			});
 
-			this.lastSpeeds.add(speed);
-			this.speeds.setLeft(speed);
-			this.speeds.setRight(this.lastSpeeds.stream().mapToDouble(s -> s).average().orElse(0D));
-		}
-	}
-
-	@SubscribeEvent
-	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Text event) {
-		if (Minecraft.getMinecraft().gameSettings.showDebugInfo) {
-			event.left.set(5, String.format("%s, v: %+.2f, %+.2f", event.left.get(5), this.speeds.getLeft(), this.speeds.getRight()));
-		} else if (customOverlayToggleKey.isSettingEnabled) {
-			event.left.add(String.format("v: %+.2f, %+.2f", this.speeds.getLeft(), this.speeds.getRight()));
-		}
-	}
-
-	@SubscribeEvent
-	public void onRenderGameOverlayText(final RenderGameOverlayEvent.Post event) {
-		if (event.type == RenderGameOverlayEvent.ElementType.ALL && lockMouseToggleKey.isSettingEnabled) {
-			final var width = event.resolution.getScaledWidth();
-			final var height = event.resolution.getScaledHeight();
-			Gui.drawRect(width - 4, height - 4, width - 2, height - 2, Color.RED.getRGB());
-		}
-	}
-
-	@SubscribeEvent(priority = EventPriority.LOWEST) // run last to let other mods do whatever they need to
-	public void onClientReceivedChat(final ClientChatReceivedEvent event) {
-		final IChatComponent msg = event.message;
-		final String text = EnumChatFormatting.getTextWithoutFormattingCodes(msg.getUnformattedText()).trim();
-		if (text.startsWith("[NPC] Don Expresso") && !text.contains("I DON'T FEEL SO GOOD...")) {
-			event.setCanceled(true);
-			return;
-		}
-
-		if (event.type == 2) {
-			if (msg instanceof ChatComponentText) {
-				final var replace = (IChatComponentText) msg;
-				replace.himmelbjerget$replaceFirstInText("✎ Mana", "✎");
-				replace.himmelbjerget$replaceFirstInText("❈ Defense", "❈");
-				replace.himmelbjerget$setText(experienceMatchDecimal.matcher(replace.himmelbjerget$getText()).replaceAll("$10%)"));
-				replace.himmelbjerget$setText(experienceMatchInteger.matcher(replace.himmelbjerget$getText()).replaceAll("$1.00%)"));
+			final var screen = client.screen;
+			if (screen == null && secondaryChatKey.consumeClick()) {
+				client.setScreen(new ChatScreen("", false));
 			}
+		});
 
-			if (text.contains("❤")) {
-				TPS.calculateFastTps();
-			}
+		HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "overlay"), Himmelbjerget::extractOverlay);
+	}
+
+	private static void extractOverlay(final GuiGraphicsExtractor graphics, final net.minecraft.client.DeltaTracker deltaTracker) {
+		final var minecraft = Minecraft.getInstance();
+		if (lockMouseToggleKey.isSettingEnabled) {
+			final var width = graphics.guiWidth();
+			final var height = graphics.guiHeight();
+			graphics.fill(width - 4, height - 4, width - 2, height - 2, Color.RED.getRGB());
 		}
 	}
 
-	@SubscribeEvent
-	public void onGuiScreenPreActionPerformed(final GuiScreenEvent.ActionPerformedEvent.Pre event) {
-		if (event.gui instanceof GuiIngameMenu && event.button.id == 1 && !GuiScreen.isShiftKeyDown()) {
-			event.setCanceled(true);
-		}
-	}
-
-	@SubscribeEvent
-	public void onKeyEvent(final InputEvent.KeyInputEvent event) {
-		keybinds.stream().filter(KeyBinding::isPressed).forEach(ToggleSettingKeyBinding::toggle);
-		final var mc = Minecraft.getMinecraft();
-		final var screen = mc.currentScreen;
-		if ((screen == null || screen.allowUserInput) && secondaryChatKey.isPressed()) {
-			mc.displayGuiScreen(new GuiChat());
-		}
-	}
-
-	// TODO: Work out if this breaks any sounds that I care about.
-	@SubscribeEvent
-	public void onSoundEvent(final PlaySoundEvent event) {
-		final var sound = event.sound;
-		if ("random.orb".equals(event.name) && (sound.getVolume() == 0.5F || (sound.getVolume() == 1F && sound.getPitch() == 1.4920635F))) {
-			((IPositionedSound) sound).setVolume(sound.getVolume() * 0.25F);
-		}
-	}
-
-	@SubscribeEvent
-	public void onWorldLoad(final WorldEvent.Load event) {
-		if (event.world.isRemote) {
-			TPS.resetTpsTimes();
-			BrigadierRoot.INSTANCE.updateHooks();
-			NotEnoughUpdates.INSTANCE.overlay.guiGroup.recalculate();
-			final var lastSlots = IBetterContainers.getLastSlots();
-			if (lastSlots != null) {
-				lastSlots.clear();
-			}
-		}
-	}
-
-	private static ToggleSettingKeyBinding registerToggleKeyBind(final String description) {
-		return registerToggleKeyBind(description, () -> {
+	private static ToggleSettingKeyBinding registerToggleKeyBind(final String translationKey) {
+		return registerToggleKeyBind(translationKey, () -> {
 		});
 	}
 
-	private static ToggleSettingKeyBinding registerToggleKeyBind(final String description, final Runnable onToggle) {
-		final var keybind = new ToggleSettingKeyBinding(description, Keyboard.KEY_NONE, "key.categories.misc", onToggle);
+	private static ToggleSettingKeyBinding registerToggleKeyBind(final String translationKey, final Runnable onToggle) {
+		final var keybind = new ToggleSettingKeyBinding(translationKey, GLFW.GLFW_KEY_UNKNOWN, CATEGORY_MISC, onToggle);
 		keybinds.add(keybind);
 		return keybind;
 	}

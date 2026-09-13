@@ -1,102 +1,52 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import gg.essential.gradle.util.noServerRunConfigs
-import net.fabricmc.loom.task.RemapJarTask
-
 plugins {
-	id("gg.essential.multi-version")
-	id("gg.essential.defaults")
-	id("com.github.johnrengelman.shadow")
-}
-
-val baseGroup: String by project
-val version: String by project
-val modName: String by project
-val modid = modName.lowercase()
-
-project.version = version
-project.group = baseGroup
-base.archivesName.set(modName)
-
-java {
-	toolchain.languageVersion.set(JavaLanguageVersion.of(8))
-}
-
-loom {
-	noServerRunConfigs()
-	runConfigs.getByName("client") {
-		property("mixin.debug.verbose", "true")
-		property("mixin.debug.export", "true")
-		programArgs("--tweakClass", "gg.essential.loader.stage0.EssentialSetupTweaker")
-	}
-	forge.mixinConfig("mixins.$modid.json")
-	@Suppress("UnstableApiUsage")
-	mixin.defaultRefmapName.set("mixins.$modid.refmap.json")
-}
-
-sourceSets {
-	val dummy by creating
-	main {
-		output.setResourcesDir(java.classesDirectory)
-		dummy.compileClasspath += compileClasspath
-		compileClasspath += dummy.output
-		output.setResourcesDir(java.classesDirectory)
-	}
+	id("net.fabricmc.fabric-loom")
 }
 
 repositories {
-	maven("https://repo.spongepowered.org/repository/maven-public")
-	maven("https://maven.bawnorton.com/releases")
-}
-
-val shade: Configuration by configurations.creating {
-	configurations.implementation.get().extendsFrom(this)
+	// Add repositories to retrieve artifacts from in here.
+	// You should only use this when depending on other mods because
+	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
+	// for more information about repositories.
 }
 
 dependencies {
-	implementation("gg.essential:loader-launchwrapper:1.2.3")
-	implementation("gg.essential:essential-1.8.9-forge:17141+gd6f4cfd3a8")
+	// To change the versions see the gradle.properties file
+	minecraft("com.mojang:minecraft:${providers.gradleProperty("minecraft_version").get()}")
+	implementation("net.fabricmc:fabric-loader:${providers.gradleProperty("loader_version").get()}")
 
-	annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0")
-	shade("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0")
-
-	annotationProcessor("org.spongepowered:mixin:0.8.7:processor")
-	compileOnly("org.spongepowered:mixin:0.8.4")
-
-	annotationProcessor("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")
-	compileOnly("com.github.bsideup.jabel:jabel-javac-plugin:0.4.2")
+	// Fabric API. This is technically optional, but you probably want it anyway.
+	implementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
 }
 
-tasks.withType(JavaCompile::class) {
-	sourceCompatibility = "17"
-	options.release = 8
+tasks.processResources {
+	val version = version
+	inputs.property("version", version)
 
-	javaCompiler = javaToolchains.compilerFor {
-		languageVersion = JavaLanguageVersion.of(17)
+	filesMatching("fabric.mod.json") {
+		expand("version" to version)
 	}
 }
 
-tasks {
-	named<Jar>("jar") {
-		manifest.attributes(
-			mapOf(
-				"FMLCorePluginContainsFMLMod" to true,
-				"ForceLoadAsMod" to true,
-				"TweakClass" to "gg.essential.loader.stage0.EssentialSetupTweaker",
-				"TweakOrder" to "0",
-				"MixinConfigs" to "mixins.$modid.json"
-			)
-		)
-		dependsOn(shadowJar)
-		enabled = false
-	}
-	named<RemapJarTask>("remapJar") {
-		inputFile.set(shadowJar.get().archiveFile)
-	}
-	named<ShadowJar>("shadowJar") {
-		destinationDirectory.set(layout.buildDirectory.dir("tmp"))
-		archiveClassifier.set("dev")
-		configurations = listOf(shade)
-		relocate("com.bawnorton.mixinsquared", "$baseGroup.deps.mixinsquared")
-		mergeServiceFiles()
+tasks.withType<JavaCompile>().configureEach {
+	options.release = 25
+}
+
+java {
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
+	// If you remove this line, sources will not be generated.
+	// withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+tasks.jar {
+	val projectName = project.name
+	inputs.property("projectName", projectName)
+
+	from("LICENSE") {
+		rename { "${it}_$projectName" }
 	}
 }

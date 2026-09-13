@@ -1,27 +1,17 @@
 pluginManagement {
 	repositories {
-		gradlePluginPortal()
+		maven {
+			name = "Fabric"
+			url = uri("https://maven.fabricmc.net/")
+		}
 		mavenCentral()
-		maven("https://repo.essential.gg/repository/maven-public")
-		maven("https://maven.architectury.dev")
-		maven("https://maven.fabricmc.net")
-		maven("https://maven.minecraftforge.net")
+		gradlePluginPortal()
 	}
+
 	plugins {
-		id("gg.essential.multi-version.root") version "0.6.5"
+		id("net.fabricmc.fabric-loom") version providers.gradleProperty("loom_version")
 	}
 }
 
-val modName: String by settings
-rootProject.name = modName
-rootProject.buildFileName = "root.gradle.kts"
-
-listOf(
-	"1.8.9-forge"
-).forEach { version ->
-	include(":$version")
-	project(":$version").apply {
-		projectDir = file("versions/$version")
-		buildFileName = "../../build.gradle.kts"
-	}
-}
+// Should match your modid
+rootProject.name = "himmelbjerget"

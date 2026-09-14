@@ -15,6 +15,7 @@
 		"MixinGui",
 		"MixinMouseHandler",
 		"MixinOptions",
-		"MixinSoundEngine"
+		"MixinSoundEngine",
+		"firmament.MixinSBCraftingRecipeRenderer"
 	]
 }

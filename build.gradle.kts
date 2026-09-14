@@ -3,11 +3,15 @@ plugins {
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+	maven("https://maven.shedaniel.me/")
+	exclusiveContent {
+		forRepository {
+			maven("https://api.modrinth.com/maven/")
+		}
+		filter {
+			includeGroup("maven.modrinth")
+		}
+	}
 }
 
 dependencies {
@@ -17,6 +21,13 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
+
+	implementation("net.fabricmc:fabric-language-kotlin:1.14.1+kotlin.2.4.20")
+
+	implementation("me.shedaniel:RoughlyEnoughItems-fabric:${providers.gradleProperty("rei_version").get()}")
+
+	// firmament
+	implementation("maven.modrinth:IJNUBZ2a:J4SP0hOE")
 }
 
 tasks.processResources {
@@ -33,11 +44,6 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	// withSourcesJar()
-
 	sourceCompatibility = JavaVersion.VERSION_25
 	targetCompatibility = JavaVersion.VERSION_25
 }

@@ -16,6 +16,6 @@
 		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinSoundEngine",
-		"firmament.MixinSBCraftingRecipeRenderer"
+		"rei.MixinSBCraftingRecipeRenderer"
 	]
 }

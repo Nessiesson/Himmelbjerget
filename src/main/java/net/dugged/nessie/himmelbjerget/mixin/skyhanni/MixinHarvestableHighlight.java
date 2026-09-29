@@ -19,7 +19,7 @@ public abstract class MixinHarvestableHighlight {
 		final var slot = InventoryUtils.INSTANCE.getSlotAtIndex(20);
 		if (slot != null) {
 			final var sapling = ItemUtils.INSTANCE.takeUnlessEmpty(slot.getItem());
-			if (sapling != null && sapling.is(Items.JUNGLE_SAPLING) && ItemUtils.INSTANCE.getLoreComponent(sapling).stream().anyMatch(lore -> "Stage: 10/10".equals(lore.getString()))) {
+			if (sapling != null && sapling.is(Items.JUNGLE_SAPLING) && ItemUtils.INSTANCE.getLoreComponent(sapling).stream().anyMatch(lore -> "Stage: FULLY GROWN".equals(lore.getString()))) {
 				RenderUtils.INSTANCE.highlight(slot, LorenzColor.GREEN);
 			}
 		}

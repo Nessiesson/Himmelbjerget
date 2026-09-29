@@ -26,8 +26,11 @@ dependencies {
 
 	implementation("me.shedaniel:RoughlyEnoughItems-fabric:${providers.gradleProperty("rei_version").get()}")
 
-	// firmament
+	// firmament 44.3.0+mc26.1
 	implementation("maven.modrinth:IJNUBZ2a:J4SP0hOE")
+
+	// skyhanni 9.1.0
+	implementation("maven.modrinth:byNkmv5G:JuSRfyPe")
 }
 
 tasks.processResources {

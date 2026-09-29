@@ -16,6 +16,7 @@
 		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinSoundEngine",
-		"rei.MixinSBCraftingRecipeRenderer"
+		"rei.MixinSBCraftingRecipeRenderer",
+		"skyhanni.MixinHarvestableHighlight"
 	]
 }
